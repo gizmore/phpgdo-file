@@ -1,2 +1,3 @@
-# phpgdo-file
-File module for GDOv7. Formerly a core module, it is now optional. Uses flow.js to upload in chunks.
+# gdo6-file
+File utilty and file gdo6 components.
+
