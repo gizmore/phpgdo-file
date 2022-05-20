@@ -17,7 +17,7 @@ use GDO\Core\GDT_Response;
  * File input and upload backend for flow.js
  * 
  * @author gizmore
- * @version 6.10.3
+ * @version 7.0.1
  * @since 4.2.0
  */
 class GDT_File extends GDT_Object
@@ -25,10 +25,10 @@ class GDT_File extends GDT_Object
 	use WithHREF;
 	use WithImageSize;
 	
-	public $multiple = false;
+	public bool $multiple = false;
 	
 	public function defaultLabel() : self { return $this->label('file'); }
-	public function isImageFile() { return false; }
+	public function isImageFile() : bool { return false; }
 	
 	protected function __construct()
 	{
@@ -41,8 +41,13 @@ class GDT_File extends GDT_Object
 	############
 	### Mime ###
 	############
-	public $mimes = [];
-	public function mime(...$mime)
+	/**
+	 * Allowed MIME Types.
+	 * @var string[]
+	 */
+	public array $mimes = [];
+	
+	public function mime(...$mime) : self
 	{
 		$this->mimes = array_merge($this->mimes, $mime);
 		return $this;
@@ -51,21 +56,21 @@ class GDT_File extends GDT_Object
 	############
 	### Size ###
 	############
-	public $minsize;
-	public function minsize($minsize)
+	public ?int $minsize;
+	public function minsize(int $minsize) : self
 	{
 		$this->minsize = $minsize;
 		return $this;
 	}
 	
-	public $maxsize = 1024 * 4096; # 4MB
-	public function maxsize($maxsize)
+	public ?int $maxsize = 1024 * 4096; # 4MB
+	public function maxsize(int $maxsize) : self
 	{
 		$this->maxsize = $maxsize;
 		return $this;
 	}
 	
-	public function defaultSize()
+	public function defaultSize() : self
 	{
 	    return $this->maxsize(Module_File::instance()->cfgUploadMaxSize());
 	}
@@ -73,34 +78,37 @@ class GDT_File extends GDT_Object
 	###############
 	### Preview ###
 	###############
-	public $preview = false;
-	public function preview($preview=true)
+	public bool $preview = false;
+	public function preview(bool $preview=true) : self
 	{
 		$this->preview = $preview;
 		return $this;
 	}
 	
-	public $previewHREF;
-	public function previewHREF($previewHREF=null) { $this->previewHREF = $previewHREF; return $this->preview($previewHREF!==null); }
-	public function displayPreviewHref(GDO_File $file)
+	public string $previewHREF;
+	public function previewHREF(string $previewHREF=null) : self
 	{
-		return str_replace(
-			'{id}', $file->getID(),
-			$this->previewHREF);
+		$this->previewHREF = $previewHREF;
+		return $this->preview($previewHREF !== null);
+	}
+
+	public function displayPreviewHref(GDO_File $file) : string
+	{
+		return str_replace('{id}', $file->getID(), $this->previewHREF);
 	}
 	
 	##################
 	### File count ###
 	##################
-	public $minfiles = 0;
-	public $maxfiles = 1;
-	public function minfiles($minfiles)
+	public int $minfiles = 0;
+	public function minfiles(int $minfiles) : self
 	{
 		$this->minfiles = $minfiles;
-		return $minfiles  > 0 ? $this->notNull() : $this;
+		return $minfiles > 0 ? $this->notNull() : $this;
 	}
 	
-	public function maxfiles($maxfiles)
+	public int $maxfiles = 1;
+	public function maxfiles(int $maxfiles) : self
 	{
 		$this->maxfiles = $maxfiles;
 		return $this;
@@ -109,12 +117,13 @@ class GDT_File extends GDT_Object
 	############
 	### Size ###
 	############
-	public function styleSize()
+	public function styleSize() : ?string
 	{
 	    if ($this->imageWidth)
 	    {
 	        return sprintf('max-width: %.01fpx; max-height: %.01fpx;', $this->imageWidth, $this->imageHeight);
 	    }
+	    return null;
 	}
 	##############
 	### Bound  ###
@@ -122,16 +131,16 @@ class GDT_File extends GDT_Object
 	### XXX: Bound checking is done before a possible conversion.
 	###	  It could make sense to set those values to 10,10,2048,2048 or something.
 	###	  This could prevent DoS with giant images.
-	### @see \GDO\File\GDT_File
+	### @see GDT_File
 	##############
-	public $minWidth;
-	public function minWidth($minWidth) { $this->minWidth = $minWidth; return $this; }
-	public $maxWidth;
-	public function maxWidth($maxWidth) { $this->maxWidth = $maxWidth; return $this; }
-	public $minHeight;
-	public function minHeight($minHeight) { $this->minHeight = $minHeight; return $this; }
-	public $maxHeight;
-	public function maxHeight($maxHeight) { $this->maxHeight = $maxHeight; return $this; }
+	public ?int $minWidth;
+	public function minWidth(int $minWidth=null) : self { $this->minWidth = $minWidth; return $this; }
+	public ?int $maxWidth;
+	public function maxWidth(int $maxWidth=null) : self { $this->maxWidth = $maxWidth; return $this; }
+	public ?int $minHeight;
+	public function minHeight(int $minHeight=null) : self { $this->minHeight = $minHeight; return $this; }
+	public ?int $maxHeight;
+	public function maxHeight(int $maxHeight=null) : self { $this->maxHeight = $maxHeight; return $this; }
 	
 	##############
 	### Action ###
@@ -187,7 +196,7 @@ class GDT_File extends GDT_Object
 	    return GDT_Template::php('File', 'card/filecard.php', ['field' => $this]);
 	}
 	
-	public function initJSONFiles()
+	public function initJSONFiles() : array
 	{
 		$json = [];
 		$files = Arrays::arrayed($this->getValue());
@@ -217,14 +226,12 @@ class GDT_File extends GDT_Object
 				return $value->getID();
 			}
 		}
+		return null;
 	}
 
 	public function toValue(string $var = null)
 	{
-		if ($var !== null)
-		{
-			return GDO_File::getById($var);
-		}
+		return $var ? GDO_File::getById($var) : null;
 	}
 	
 	public function getVar() : ?string
@@ -236,19 +243,16 @@ class GDT_File extends GDT_Object
 	 * Get all initial files for this file gdt.
 	 * @return \GDO\File\GDO_File[]
 	 */	
-	public function getInitialFiles()
+	public function getInitialFiles() : array
 	{
 		return Arrays::arrayed($this->getInitialFile());
 	}
 	
-	public function getInitialFile()
+	public function getInitialFile() : ?GDO_File
 	{
 // 		$var = $this->getRequestVar($this->formVariable(), $this->var);
 		$var = $this->getInput();
-		if ($var !== null)
-		{
-			return GDO_File::getById($var);
-		}
+		return $var ? GDO_File::getById($var) : null;
 	}
 	
 // 	public function setGDOData(GDO $gdo=null)
@@ -649,7 +653,7 @@ class GDT_File extends GDT_Object
 		@file_put_contents($finalFile, file_get_contents($fullpath), FILE_APPEND);
 	}
 	
-	protected function onFlowFinishTests($key, $file)
+	protected function onFlowFinishTests(string $key, $file)
 	{
 		if (false !== ($error = $this->onFlowTestChecksum($key, $file)))
 		{

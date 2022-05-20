@@ -7,17 +7,19 @@ use GDO\Core\GDO_Module;
  * File related stuff is covered by Module_File.
  * All files are stored in a single gdo_file table.
  * Other modules or GDO point to these files in that table.
- * Uploading is chunky done via flow.js, if possible. PHP $_FILES fallback is in use.
+ * Uploading is chunky done via flow.js, if possible.
+ * PHP $_FILES fallback is used.
  * Adds filesize and MIME type GDT.
  *
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.2.0
  * @see GDT_File
  * @see GDT_Files
+ * @see GDT_ImageFile
+ * @see GDT_ImageFiles
  * @see GDO_File
  * @see GDO_FileTable
- * @see GDT_ImageFiles
  */
 final class Module_File extends GDO_Module
 {
@@ -26,7 +28,12 @@ final class Module_File extends GDO_Module
 	##############
 	### Module ###
 	##############
-	public function getDependencies() : array
+// 	public function getDependencies() : array
+// 	{
+// 		return [];
+// 	}
+
+	public function getFriendencies() : array
 	{
 		return ['Cronjob'];
 	}

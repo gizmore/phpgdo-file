@@ -27,23 +27,22 @@ class GDT_Files extends GDT_File
 	### STUB GDT methods ###
 	########################
 	public function gdoColumnNames() {} # NO DB column.
-	public function gdoColumnDefine() : string { return null; } # NO DB column. Your GDO_FileTable has the data.
-	public function getGDOData() : ?array {} # Only relation table. Handled by onCreate and onUpdate.
+	public function gdoColumnDefine() : string { return ''; } # NO DB column. Your GDO_FileTable has the data.
+	public function getGDOData() : ?array { return null; } # Only relation table. Handled by onCreate and onUpdate.
 	public function setGDOData(GDO $gdo=null) { return $this; }
 	
 	/**
 	 * @var $value GDO_File[]
 	 */
-	public function toVar($value) : ?string {} # cannot be saved as column.
+	public function toVar($value) : ?string { return null; } # cannot be saved as column.
 	
 	##################
 	### File Table ###
 	##################
-	/** @var $fileTable GDO **/
-	public $fileTable;
-	/** @var $fileObjectTable GDO **/
-	public $fileObjectTable;
-	public function fileTable(GDO_FileTable $table)
+	public GDO $fileTable;
+	public GDO $fileObjectTable;
+	
+	public function fileTable(GDO_FileTable $table) : self
 	{
 		$this->fileTable = $table;
 		$this->fileObjectTable = $table->gdoFileObjectTable();
@@ -53,14 +52,14 @@ class GDT_Files extends GDT_File
 	#########################
 	### GDT_File override ###
 	#########################
-	public $multiple = true;
+	public bool $multiple = true;
 	
-	public function getInitialFiles()
+	public function getInitialFiles() : array
 	{
-		if ( (!$this->gdo) || (!$this->gdo->isPersisted()) )
-		{
-			return []; # has no stored files as its not even saved yet.
-		}
+// 		if ( (!$this->gdo) || (!$this->gdo->isPersisted()) )
+// 		{
+// 			return []; # has no stored files as its not even saved yet.
+// 		}
 		# Fetch all from relation table as GDO_File array.
 		return $this->fileTable->select('*, files_file_t.*')->
 			fetchTable(GDO_File::table())->
@@ -77,8 +76,7 @@ class GDT_Files extends GDT_File
 		{
 			$this->files = array_merge(
 				$this->getInitialFiles(),
-				Arrays::arrayed(
-					$this->getFiles($this->name)));
+				Arrays::arrayed($this->getFiles($this->name)));
 		}
 		return $this->files;
 	}
@@ -140,7 +138,6 @@ class GDT_Files extends GDT_File
 	
 	/**
 	 * This is the delete action that removes the files.
-	 * 
 	 */
 	public function onDeleteFiles(array $ids)
 	{

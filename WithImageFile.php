@@ -6,20 +6,20 @@ use GDO\UI\WithImageSize;
 /**
  * Add this trait for image related file stuff.
  * 
- * @author gizmore, kalle
- * @version 6.11.0
+ * @author gizmore
+ * @version 7.0.1
  * @since 6.7.0
  */
 trait WithImageFile
 {
     use WithImageSize;
     
-	public function isImageFile() { return true; }
+	public function isImageFile() : bool { return true; }
 	
 	##############
 	### Scaled ###
 	##############
-	public $scaledVersions = [];
+	public array $scaledVersions = [];
 	public function scaledVersion($name, $width, $height, $format=null)
 	{
 		$this->scaledVersions[$name] = [$width, $height, $format];
@@ -29,18 +29,18 @@ trait WithImageFile
 	###############
 	### Variant ###
 	###############
-	public $variant;
-	public function variant($variant) { $this->variant = $variant; return $this; }
+	public string $variant;
+	public function variant(string $variant) : self { $this->variant = $variant; return $this; }
 	
 	############
 	### HREF ###
 	############
-	public function displayPreviewHref(GDO_File $file)
+	public function displayPreviewHref($file) : string
 	{
 	    $href = parent::displayPreviewHref($file);
-	    if ($this->variant)
+	    if (isset($this->variant))
 	    {
-	        $href .= '&variant='.$this->variant;
+	        $href .= "&variant={$this->variant}";
 	    }
 	    return $href;
 	}
@@ -48,7 +48,7 @@ trait WithImageFile
 	#################
 	### Flow test ###
 	#################
-	protected function onFlowFinishTests($key, $file)
+	protected function onFlowFinishTests(string $key, $file)
 	{
 		if (false !== ($error = parent::onFlowFinishTests($key, $file)))
 		{
@@ -61,7 +61,7 @@ trait WithImageFile
 		return false;
 	}
 	
-	private function onFlowTestImageDimension($key, $file)
+	private function onFlowTestImageDimension(string $key, GDO_File $file)
 	{
 		return false;
 	}

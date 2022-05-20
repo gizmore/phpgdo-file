@@ -68,6 +68,7 @@ final class FileUtil
 	###############
 	/**
 	 * Get the size of a folder recursively.
+	 * 
 	 * @deprecated too slow!
 	 * @param string $path
 	 * @return int
