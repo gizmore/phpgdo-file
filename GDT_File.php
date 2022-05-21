@@ -4,6 +4,7 @@ namespace GDO\File;
 use GDO\Core\GDT_Template;
 use GDO\Session\GDO_Session;
 use GDO\Util\Arrays;
+use GDO\Util\FileUtil;
 use GDO\Core\GDO;
 use GDO\Core\GDT_Object;
 use GDO\UI\WithHREF;

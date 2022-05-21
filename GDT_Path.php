@@ -2,6 +2,7 @@
 namespace GDO\File;
 
 use GDO\Core\GDT_String;
+use GDO\Util\FileUtil;
 
 /**
  * A path variable with existance validator.

@@ -1,6 +1,8 @@
 <?php
 namespace GDO\File;
 
+use GDO\Util\FileUtil;
+
 /**
  * Directory traversing utility.
  * 

@@ -2,6 +2,7 @@
 namespace GDO\File;
 
 use GDO\Core\GDT_UInt;
+use GDO\Util\FileUtil;
 
 /**
  * Display int as human readable filesize.
