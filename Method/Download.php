@@ -30,7 +30,7 @@ class Download extends Method
         return $this->gdoParameterValue('id');
     }
     
-    public function execute() : GDT
+    public function execute()
     {
         $user = GDO_User::current();
         $file = $this->getFile();

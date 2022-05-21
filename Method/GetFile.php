@@ -44,7 +44,7 @@ final class GetFile extends Method
 		);
 	}
 	
-	public function execute() : GDT
+	public function execute()
 	{
 		return $this->executeWithId(
 			Common::getRequestString('file'),
