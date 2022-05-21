@@ -8,7 +8,7 @@ use GDO\File\GDT_File;
 use GDO\File\GDT_ImageFile;
 use GDO\File\GDT_ImageFiles;
 use GDO\File\GDO_File;
-use GDO\File\FileUtil;
+use GDO\Util\FileUtil;
 use GDO\File\ImageResize;
 use GDO\Cronjob\MethodCronjob;
 

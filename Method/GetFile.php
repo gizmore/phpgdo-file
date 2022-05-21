@@ -3,7 +3,7 @@ namespace GDO\File\Method;
 
 use GDO\Core\Method;
 use GDO\File\GDO_File;
-use GDO\File\FileUtil;
+use GDO\Util\FileUtil;
 use GDO\Net\Stream;
 use GDO\Util\Common;
 use GDO\Core\GDT;
