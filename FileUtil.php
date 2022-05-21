@@ -11,7 +11,7 @@ use GDO\Core\GDT_Float;
  * File system utilities.
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.0.0
  */
 final class FileUtil
@@ -87,29 +87,6 @@ final class FileUtil
 		return $bytes;
 	}
 	
-// 	/**
-// 	 * Replace DIR separator with OS agnostic character.
-// 	 * @deprecated unneeded
-// 	 * @param string $path
-// 	 * @return string
-// 	 */
-// 	public static function path(string $path) : string
-// 	{
-// 	    return str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $path);
-// 	}
-	
-// 	/**
-// 	 * Convert dir separator to unix style.
-// 	 * Used in mysql source filename :/
-// 	 * @deprecated should not matter.
-// 	 * @param string $path
-// 	 * @return string
-// 	 */
-// 	public static function linuxPath($path)
-// 	{
-// 	    return str_replace(['/', '\\'], '/', $path);
-// 	}
-	
     /**
 	 * Scandir without '.' and '..'. 
 	 * @param string $dir
@@ -122,9 +99,8 @@ final class FileUtil
 	
 	/**
 	 * Remove a dir recursively, file by file.
-	 * @deprecated use rm -rf
-	 * @param string $dir
-	 * @return boolean
+	 * 
+	 * @deprecated use system(rm -rf)
 	 */
 	public static function removeDir(string $dir) : bool
 	{
@@ -207,9 +183,7 @@ final class FileUtil
 	
 	/**
 	 * Converts a human filesize to bytes as integer.
-	 * @example humanToBytes("12kb"); # => 12288
-	 * @param string $s
-	 * @return int
+	 * @example humanToBytes("12kb") => 12288
 	 */
 	public static function humanToBytes(string $s) : int
 	{
