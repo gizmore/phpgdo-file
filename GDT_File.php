@@ -676,11 +676,11 @@ class GDT_File extends GDT_Object
 	{
 		if (!($mime = @file_get_contents($this->getChunkDir($key).'/mime')))
 		{
-			return t('err_no_mime_file', [$this->displayLabel(), $key]);
+			return t('err_no_mime_file', [$this->renderLabel(), $key]);
 		}
 		if ((!in_array($mime, $this->mimes, true)) && (count($this->mimes)>0))
 		{
-			return t('err_mimetype', [$this->displayLabel(), $mime]);
+			return t('err_mimetype', [$this->renderLabel(), $mime]);
 		}
 		return false;
 	}

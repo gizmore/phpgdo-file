@@ -13,7 +13,7 @@
 </div>
 <div class="gdt-container<?= $field->classError(); ?>">
   <?=$field->htmlIcon()?>
-  <label <?=$field->htmlForID()?>><?=$field->displayLabel()?></label>
+  <label <?=$field->htmlForID()?>><?=$field->renderLabel()?></label>
   <input
    type="file"
 <?php if ($field->isImageFile()) : ?>
