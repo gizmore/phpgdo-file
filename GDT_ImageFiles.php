@@ -6,7 +6,7 @@ use GDO\UI\GDT_Image;
 /**
  * An image file array with N:M table.
  * 
- * @version 7.0.1
+ * @version 7.0.0
  * @since 6.11.0
  * @see GDT_Files
  * @author gizmore

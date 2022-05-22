@@ -7,7 +7,7 @@ use GDO\UI\WithImageSize;
  * Add this trait for image related file stuff.
  * 
  * @author gizmore
- * @version 7.0.1
+ * @version 7.0.0
  * @since 6.7.0
  */
 trait WithImageFile

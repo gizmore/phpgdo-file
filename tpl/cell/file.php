@@ -13,7 +13,7 @@ use GDO\UI\GDT_Icon; ?>
   <?= GDT_Icon::iconS('file'); ?>
 <?php endif; ?>
 <?php if ($field->withFileInfo) : ?>
-  <span class="gdo-file-title"><?= $gdo->displayName(); ?></span>
+  <span class="gdo-file-title"><?= $gdo->renderName(); ?></span>
   <span class="gdo-file-size"><?= $gdo->displaySize(); ?></span>
   <span class="gdo-file-type"><?= $gdo->getType(); ?></span>
   <div class="cf"></div>

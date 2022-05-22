@@ -12,7 +12,7 @@ use GDO\Core\GDO_Module;
  * Adds filesize and MIME type GDT.
  *
  * @author gizmore
- * @version 7.0.1
+ * @version 7.0.0
  * @since 6.2.0
  * @see GDT_File
  * @see GDT_Files

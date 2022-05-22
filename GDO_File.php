@@ -49,7 +49,7 @@ final class GDO_File extends GDO
 	}
 	
 	public function getName() : ?string { return $this->gdoVar('file_name'); }
-	public function displayName() : string { return html($this->getName()); }
+	public function renderName() : string { return html($this->getName()); }
 	public function getSize() { return $this->gdoVar('file_size'); }
 	public function getType() { return $this->gdoVar('file_type'); }
 	public function displaySize() { return FileUtil::humanFilesize($this->getSize()); }
