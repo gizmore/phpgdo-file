@@ -22,6 +22,7 @@ use GDO\Core\GDT_Response;
 class GDT_Files extends GDT_File
 {
 	public function defaultLabel() : self { return $this->label('files'); }
+	public function isTestable() : bool { return false; }
 	
 	########################
 	### STUB GDT methods ###
