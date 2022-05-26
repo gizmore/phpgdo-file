@@ -4,6 +4,7 @@ namespace GDO\File;
 use GDO\Core\GDO;
 use GDO\Core\GDT_AutoInc;
 use GDO\Date\GDT_Duration;
+use GDO\Core\GDT_Filesize;
 use GDO\Core\GDT_String;
 use GDO\Core\GDT_Template;
 use GDO\Core\GDT_UInt;
@@ -131,7 +132,7 @@ final class GDO_File extends GDO
 	###############
 	public static function filesDir()
 	{
-	    if (Application::instance()->isUnitTests())
+	    if (Application::$INSTANCE->isUnitTests())
 	    {
 	        return GDO_PATH . 'files_test/';
 	    }

@@ -2,6 +2,7 @@
 namespace GDO\File;
 
 use GDO\Core\GDO_Module;
+use GDO\Core\GDT_Filesize;
 
 /**
  * File related stuff is covered by Module_File.
