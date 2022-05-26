@@ -5,6 +5,7 @@ use GDO\Core\GDT_Template;
 use GDO\Session\GDO_Session;
 use GDO\Util\Arrays;
 use GDO\Util\FileUtil;
+use GDO\Util\Filewalker;
 use GDO\Core\GDO;
 use GDO\Core\GDT_Object;
 use GDO\UI\WithHREF;
@@ -252,7 +253,7 @@ class GDT_File extends GDT_Object
 	public function getInitialFile() : ?GDO_File
 	{
 // 		$var = $this->getRequestVar($this->formVariable(), $this->var);
-		$var = $this->getInput();
+		$var = $this->getInput($this->getName());
 		return $var ? GDO_File::getById($var) : null;
 	}
 	
