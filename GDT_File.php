@@ -236,7 +236,7 @@ class GDT_File extends GDT_Object
 		return $var ? GDO_File::getById($var) : null;
 	}
 	
-	public function getVar() : ?string
+	public function getVar()
 	{
 		return $this->toVar($this->getValue());
 	}
