@@ -171,12 +171,12 @@ class GDT_File extends GDT_Object
 	##############
 	public function renderForm() : string
 	{
-		return GDT_Template::php('File', 'form/file.php', ['field'=>$this]);
+		return GDT_Template::php('File', 'file_form.php', ['field'=>$this]);
 	}
 	
 	public function renderCell() : string
 	{
-		return GDT_Template::php('File', 'cell/file.php', ['field' => $this, 'gdo' => $this->getValue()]);
+		return GDT_Template::php('File', 'file_html.php', ['field' => $this, 'gdo' => $this->getValue()]);
 	}
 	
 	public function configJSON() : array
