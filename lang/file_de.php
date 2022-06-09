@@ -1,5 +1,6 @@
 <?php
-return array(
+namespace GDO\File\lang;
+return [
 	'file' => 'Datei',
 	'files' => 'Dateien',
 	'image' => 'Bild',
@@ -27,4 +28,7 @@ return array(
     'browse' => 'Durchsuchen&hellip;',
     'cfg_upload_max_size' => 'Standard Upload Max-Größe',
 	'msg_file_deleted' => 'Die Datei wurde gelöscht.',
-);
+
+	# 7.0.0
+	'mt_cron_variants' => 'Bild-Varianten',
+];

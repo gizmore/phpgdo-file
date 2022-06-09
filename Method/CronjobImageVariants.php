@@ -27,6 +27,11 @@ final class CronjobImageVariants extends MethodCronjob
 	private $numConverted = 0;
 	private $numErased = 0;
 	
+	public function getMethodTitle() : string
+	{
+		return t('mt_cron_variants');
+	}
+	
 	public function run()
 	{
 		foreach (ModuleLoader::instance()->getModules() as $module)
