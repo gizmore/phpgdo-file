@@ -34,7 +34,7 @@ final class GetFile extends Method
 {
     public function isTrivial() { return false; } # no trivial method testing.
     
-	public function getPermission() : ?string { return 'admin'; }
+	public function getPermission() : ?string : ?string { return 'admin'; }
 	
 	public function gdoParameters() : array
 	{

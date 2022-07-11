@@ -545,7 +545,7 @@ class GDT_File extends GDT_Object
 	private function onFlowError($error, ...$args)
 	{
 	    $this->cleanup();
-		return GDT_Error::responseWith($error, $args, 413);
+		return GDT_Error::make()->text($error, $args);
 	}
 	
 	private function onFlowUploadFile($key, $file)
