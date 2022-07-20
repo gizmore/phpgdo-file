@@ -405,7 +405,7 @@ class GDT_File extends GDT_Object
 	            {
 	                if (!($file->getSize()))
 	                {
-	                    $valid = $this->error('err_file_not_ok', [$file->display('file_name')]);
+	                    $valid = $this->error('err_file_not_ok', [$file->gdoDisplay('file_name')]);
 	                }
 	                elseif (!$this->validateFile($file))
 	                {
