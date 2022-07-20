@@ -420,7 +420,7 @@ class GDT_File extends GDT_Object
 	                        $file->copy();
 	                        if ($this->gdo)
 	                        {
-	                            if (!$this->gdo->isTable())
+	                            if (!$this->gdo->gdoIsTable())
 	                            {
 	                            	if (!$this->multiple)
 	                            	{

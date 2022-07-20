@@ -115,7 +115,8 @@ final class CronjobImageVariants extends MethodCronjob
 	private function createImageVariantsForGDO(GDO $table, GDT_File $gdt)
 	{
 		# select all gdo's as file
-		$query = $table->select($gdt->identifier().'_t.*')-> # from GDO but only joined columns
+		$query = $table->select($gdt->name.'_t.*')-> # from GDO but only joined columns
+			joinObject($gdt->name)->
 			where($gdt->identifier() . ' IS NOT NULL')-> # where gdt_file is not null
 			fetchTable(GDO_File::table()); # and fetch as file.
 		

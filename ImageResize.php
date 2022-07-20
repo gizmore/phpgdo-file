@@ -92,8 +92,8 @@ final class ImageResize
 			/*
 			 * Copy cropped region from temporary image into the desired GD image
 			 */
-			$x0 = ($temp_width - $toWidth) / 2;
-			$y0 = ($temp_height - $toHeight) / 2;
+			$x0 = ceil(($temp_width - $toWidth) / 2);
+			$y0 = ceil(($temp_height - $toHeight) / 2);
 			$desired_gdim = imagecreatetruecolor($toWidth, $toHeight);
 			imagecopy(
 				$desired_gdim,
