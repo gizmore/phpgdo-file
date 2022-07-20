@@ -14,6 +14,7 @@ use GDO\UI\GDT_Success;
 use GDO\Core\GDO_Module;
 use GDO\UI\WithImageSize;
 use GDO\Core\GDT_Response;
+use GDO\Core\Debug;
 
 /**
  * File input and upload backend for flow.js
@@ -58,7 +59,7 @@ class GDT_File extends GDT_Object
 	############
 	### Size ###
 	############
-	public ?int $minsize;
+	public ?int $minsize = null;
 	public function minsize(int $minsize) : self
 	{
 		$this->minsize = $minsize;
@@ -135,13 +136,13 @@ class GDT_File extends GDT_Object
 	###	  This could prevent DoS with giant images.
 	### @see GDT_File
 	##############
-	public ?int $minWidth;
+	public ?int $minWidth = null;
 	public function minWidth(int $minWidth=null) : self { $this->minWidth = $minWidth; return $this; }
-	public ?int $maxWidth;
+	public ?int $maxWidth = null;
 	public function maxWidth(int $maxWidth=null) : self { $this->maxWidth = $maxWidth; return $this; }
-	public ?int $minHeight;
+	public ?int $minHeight = null;
 	public function minHeight(int $minHeight=null) : self { $this->minHeight = $minHeight; return $this; }
-	public ?int $maxHeight;
+	public ?int $maxHeight = null;
 	public function maxHeight(int $maxHeight=null) : self { $this->maxHeight = $maxHeight; return $this; }
 	
 	##############
@@ -241,6 +242,35 @@ class GDT_File extends GDT_Object
 		return $this->toVar($this->getValue());
 	}
 	
+	public function getInput(string $key = null)
+	{
+		if ($this->multiple)
+		{
+			throw new \Exception("Multiple files not supported yet.");
+		}
+		$files = $this->getFiles($key);
+		if (count($files))
+		{
+			# Persist uploads.
+			foreach ($files as $file)
+			{
+				/** @var $file GDO_File **/
+				if (!$file->isPersisted())
+				{
+					$file->insert();
+					$this->beforeCopy($file);
+					$file->copy();
+// 					$this->var($file->getID());
+				}
+			}
+			
+			# Return first file
+			$k = array_key_first($files);
+			return $files[$k]->getID();
+		}
+		return null;
+	}
+	
 	/**
 	 * Get all initial files for this file gdt.
 	 * @return \GDO\File\GDO_File[]
@@ -297,7 +327,7 @@ class GDT_File extends GDT_Object
 	 */
 	public function getValue()
 	{
-		$files = array_merge($this->getInitialFiles(), Arrays::arrayed($this->files));
+		$files = array_merge($this->getInitialFiles(), Arrays::arrayed($this->getFiles($this->name)));
 		return array_pop($files);
 	}
 	
@@ -407,16 +437,17 @@ class GDT_File extends GDT_Object
 	                }
 	            }
 	        }
-	        return $valid;
 	    }
 	    catch (\Throwable $ex)
 	    {
+	    	Debug::debugException($ex);
 	        $valid = false;
 	    }
 	    finally
 	    {
 	        $this->cleanup();
 	    }
+        return $valid;
 	}
 	
 	protected function validateFile(GDO_File $file)
@@ -472,8 +503,14 @@ class GDT_File extends GDT_Object
 		}
 	}
 	
+	protected array $uploadedFiles;
+	
 	protected function getFiles($key)
 	{
+		if (isset($this->uploadedFiles))
+		{
+			return $this->uploadedFiles;
+		}
 		$files = array();
 		$path = $this->getTempDir($key);
 		if ($dir = @dir($path))
@@ -503,6 +540,9 @@ class GDT_File extends GDT_Object
 				));
 			}
 		}
+		
+		$this->uploadedFiles = $files;
+		
 		return $files;
 	}
 	
@@ -514,13 +554,21 @@ class GDT_File extends GDT_Object
 	{
 		if (FileUtil::isFile($dir.'/0'))
 		{
-		    return GDO_File::fromForm([
+			if ($id = @file_get_contents($dir.'/id'))
+			{
+				return GDO_File::getById($id);
+			}
+			$file = GDO_File::fromForm([
 				'name' => @file_get_contents($dir.'/name'),
 				'type' => @file_get_contents($dir.'/mime'),
 				'size' => filesize($dir.'/0'),
 				'dir' => $dir,
 				'tmp_name' => $dir.'/0',
 		    ]);
+			$file->insert();
+			$file->copy();
+			file_put_contents($dir.'/id', $file->getID());
+			return $file;
 		}
 	}
 	
@@ -579,7 +627,7 @@ class GDT_File extends GDT_Object
 				return $this->onFlowError("err_upload_failed", $error);
 			}
 		}
-		return GDT_Success::responseWith('msg_uploaded');
+		return GDT_Success::make()->text('msg_uploaded');
 	}
 	
 	private function onFlowCopyChunk($key, $file)

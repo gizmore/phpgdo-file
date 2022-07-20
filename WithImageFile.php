@@ -61,7 +61,7 @@ trait WithImageFile
 		return false;
 	}
 	
-	private function onFlowTestImageDimension(string $key, GDO_File $file)
+	private function onFlowTestImageDimension(string $key, $file)
 	{
 		return false;
 	}

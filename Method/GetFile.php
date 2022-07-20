@@ -6,7 +6,6 @@ use GDO\File\GDO_File;
 use GDO\Util\FileUtil;
 use GDO\Net\Stream;
 use GDO\Util\Common;
-use GDO\Core\GDT;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
 
@@ -34,7 +33,7 @@ final class GetFile extends Method
 {
     public function isTrivial() { return false; } # no trivial method testing.
     
-	public function getPermission() : ?string : ?string { return 'admin'; }
+	public function getPermission() : ?string { return 'admin'; }
 	
 	public function gdoParameters() : array
 	{

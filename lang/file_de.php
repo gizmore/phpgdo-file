@@ -31,4 +31,5 @@ return [
 
 	# 7.0.0
 	'mt_cron_variants' => 'Bild-Varianten',
+	'err_upload_min_files' => 'Sie müssen mindestens %s Datei(en) hochladen.',
 ];

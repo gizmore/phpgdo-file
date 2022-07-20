@@ -31,4 +31,5 @@ return [
 
 	# 7.0.0
 	'mt_cron_variants' => 'Varianti immagine',
+	'err_upload_min_files' => 'Devi caricare almeno %s file.',
 ];
