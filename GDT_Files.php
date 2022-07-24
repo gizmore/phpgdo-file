@@ -30,7 +30,7 @@ class GDT_Files extends GDT_File
 	public function gdoColumnNames() {} # NO DB column.
 	public function gdoColumnDefine() : string { return ''; } # NO DB column. Your GDO_FileTable has the data.
 	public function getGDOData() : ?array { return null; } # Only relation table. Handled by onCreate and onUpdate.
-	public function setGDOData(GDO $gdo=null) { return $this; }
+// 	public function setGDOData(GDO $gdo=null) { return $this; }
 	
 	/**
 	 * @var $value GDO_File[]
@@ -57,10 +57,10 @@ class GDT_Files extends GDT_File
 	
 	public function getInitialFiles() : array
 	{
-// 		if ( (!$this->gdo) || (!$this->gdo->isPersisted()) )
-// 		{
-// 			return []; # has no stored files as its not even saved yet.
-// 		}
+		if ( (!$this->gdo) || (!$this->gdo->isPersisted()) )
+		{
+			return []; # has no stored files as its not even saved yet.
+		}
 		# Fetch all from relation table as GDO_File array.
 		return $this->fileTable->select('*, files_file_t.*')->
 			fetchTable(GDO_File::table())->
