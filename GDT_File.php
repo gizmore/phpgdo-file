@@ -20,7 +20,7 @@ use GDO\Core\Debug;
  * File input and upload backend for flow.js
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 4.2.0
  */
 class GDT_File extends GDT_Object
@@ -242,13 +242,13 @@ class GDT_File extends GDT_Object
 		return $this->toVar($this->getValue());
 	}
 	
-	public function getInput(string $key = null)
+	public function getInput() : ?string
 	{
 		if ($this->multiple)
 		{
 			throw new \Exception("Multiple files not supported yet.");
 		}
-		$files = $this->getFiles($key);
+		$files = $this->getFiles($this->getName());
 		if (count($files))
 		{
 			# Persist uploads.
