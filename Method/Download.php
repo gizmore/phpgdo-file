@@ -10,7 +10,7 @@ use GDO\Core\GDT_String;
 
 class Download extends Method
 {
-    public function isTrivial() { return false; }
+    public function isTrivial() : bool { return false; }
     
     public function gdoParameters() : array
     {

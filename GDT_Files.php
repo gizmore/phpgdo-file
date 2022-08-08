@@ -5,6 +5,7 @@ use GDO\Util\Arrays;
 use GDO\UI\GDT_Success;
 use GDO\User\GDO_User;
 use GDO\Core\GDO;
+use GDO\Core\GDT;
 use GDO\Core\GDT_Response;
 
 /**
@@ -16,18 +17,18 @@ use GDO\Core\GDT_Response;
  * @see GDO_FileTable
  * 
  * @author gizmore@wechall.net
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.8.0
  */
 class GDT_Files extends GDT_File
 {
+	public function isTestable() : bool { return false; } # @TODO: Make it testable
 	public function defaultLabel() : self { return $this->label('files'); }
-	public function isTestable() : bool { return false; }
 	
 	########################
 	### STUB GDT methods ###
 	########################
-	public function gdoColumnNames() {} # NO DB column.
+	public function gdoColumnNames() : array { return GDT::EMPTY_ARRAY; } # NO DB column, we have a GDO_File table for this.
 	public function gdoColumnDefine() : string { return ''; } # NO DB column. Your GDO_FileTable has the data.
 	public function getGDOData() : ?array { return null; } # Only relation table. Handled by onCreate and onUpdate.
 // 	public function setGDOData(GDO $gdo=null) { return $this; }
