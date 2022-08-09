@@ -1,4 +1,7 @@
-<?php /** @var $field \GDO\File\GDT_File **/ ?>
+<?php
+namespace GDO\File\tpl;
+/** @var $field \GDO\File\GDT_File **/
+?>
 <div class="gdo-file-controls">
 <div id="gdo-file-preview-<?=$field->name?>"></div>
 <?php foreach ($field->getInitialFiles() as $file) : $file instanceof \GDO\File\GDO_File; ?>
@@ -11,17 +14,16 @@
 <?php endforeach; ?>
   <div style="clear: both;"></div>
 </div>
-<div class="gdt-container<?= $field->classError(); ?>">
-  <?=$field->htmlIcon()?>
-  <label <?=$field->htmlForID()?>><?=$field->renderLabel()?></label>
-  <input
-   type="file"
+<div class="gdt-container<?=$field->classError()?>">
+<label<?=$field->htmlForID()?>><?=$field->htmlIcon()?><?=$field->renderLabel()?></label>
+<input
+ type="file"
 <?php if ($field->isImageFile()) : ?>
-   capture="capture"
+<?=$field->htmlCapture()?>
 <?php endif; ?>
-   <?=$field->htmlID()?>
-   name="<?=$field->name?>"
-   class="gdo-flow-file" />
-  <span id="gdo-file-input-<?=$field->name?>"></span>
-  <?= $field->htmlError(); ?>
+<?=$field->htmlID()?>
+ name="<?=$field->name?>"
+ class="gdo-flow-file" />
+ <span id="gdo-file-input-<?=$field->name?>"></span>
+ <?=$field->htmlError()?>
 </div>

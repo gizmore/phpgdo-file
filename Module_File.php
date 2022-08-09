@@ -13,7 +13,7 @@ use GDO\Core\GDT_Filesize;
  * Adds filesize and MIME type GDT.
  *
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.2.0
  * @see GDT_File
  * @see GDT_Files
@@ -55,6 +55,14 @@ final class Module_File extends GDO_Module
 	{
 		$this->addBowerJS("flow.js/dist/flow.js");
 		$this->addJS('js/gdo-flow.js');
+	}
+	
+	public function getLicenseFilenames() : array
+	{
+		return [
+			'bower_components/flow.js/LICENSE',
+			'LICENSE',
+		];
 	}
 	
 	##############

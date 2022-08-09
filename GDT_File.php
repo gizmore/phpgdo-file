@@ -212,6 +212,14 @@ class GDT_File extends GDT_Object
 		return $json;
 	}
 	
+	/**
+	 * The HTML capture attribute enables camera for file input.
+	 */
+	public function htmlCapture() : string
+	{
+		return ' capture="capture"';
+	}
+		
 	#############
 	### Value ###
 	#############
@@ -572,7 +580,7 @@ class GDT_File extends GDT_Object
 		}
 	}
 	
-	public function onValidated()
+	public function onValidated() : void
 	{
 		$this->cleanup();
 	}
