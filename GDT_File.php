@@ -232,7 +232,7 @@ class GDT_File extends GDT_Object
 		return null;
 	}
 
-	public function toValue(string $var = null)
+	public function toValue($var = null)
 	{
 		return $var ? GDO_File::getById($var) : null;
 	}
