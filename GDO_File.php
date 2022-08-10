@@ -60,7 +60,7 @@ final class GDO_File extends GDO
 	public function getContents() {}
 	public function streamTo(GDO_User $user) { return Stream::serveTo($user, $this); }
 	
-	public function renderCell() : string { return GDT_Template::php('File', 'cell/file.php', ['gdo'=>$this]); }
+	public function renderHTML() : string { return GDT_Template::php('File', 'cell/file.php', ['gdo'=>$this]); }
 	public function renderCard() : string { return GDT_Template::php('File', 'card/file.php', ['gdo'=>$this]); }
 
 	public $variant = '';

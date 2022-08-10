@@ -175,7 +175,7 @@ class GDT_File extends GDT_Object
 		return GDT_Template::php('File', 'file_form.php', ['field'=>$this]);
 	}
 	
-	public function renderCell() : string
+	public function renderHTML() : string
 	{
 		return GDT_Template::php('File', 'file_html.php', ['field' => $this, 'gdo' => $this->getValue()]);
 	}
