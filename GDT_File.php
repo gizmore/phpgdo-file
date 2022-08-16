@@ -245,10 +245,10 @@ class GDT_File extends GDT_Object
 		return $var ? GDO_File::getById($var) : null;
 	}
 	
-	public function getVar()
-	{
-		return $this->toVar($this->getValue());
-	}
+// 	public function getVar()
+// 	{
+// 		return $this->toVar($this->getValue());
+// 	}
 	
 	public function getInput() : ?string
 	{
@@ -291,7 +291,8 @@ class GDT_File extends GDT_Object
 	public function getInitialFile() : ?GDO_File
 	{
 // 		$var = $this->getRequestVar($this->formVariable(), $this->var);
-		$var = $this->getInput($this->getName());
+// 		$var = $this->getInput($this->getName());
+		$var = $this->getVar();
 		return $var ? GDO_File::getById($var) : null;
 	}
 	

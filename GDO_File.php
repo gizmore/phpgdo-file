@@ -181,16 +181,13 @@ final class GDO_File extends GDO
 	}
 	
 	/**
-	 * @param string $name
-	 * @param string $path
 	 * @throws GDO_Exception
-	 * @return \GDO\File\GDO_File
 	 */
-	public static function fromPath($name, $path)
+	public static function fromPath(string $name, string $path) : GDO_File
 	{
 		if (!FileUtil::isFile($path))
 		{
-			throw new GDO_Exception(t('err_file_not_found', [$path]));
+			throw new GDO_Error('err_file_not_found', [$path]);
 		}
 		$values = [
 			'name' => $name,
