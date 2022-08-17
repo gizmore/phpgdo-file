@@ -13,7 +13,7 @@ use GDO\User\GDO_User;
  * Override gdoFileObjectTable() and return your GDO that shall have the files.
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.1.0
  */
 class GDO_FileTable extends GDO
