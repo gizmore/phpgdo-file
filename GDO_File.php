@@ -79,15 +79,15 @@ final class GDO_File extends GDO
 		return $this;
 	}
 	
-	public function getHref() { return $this->href; }
-	public function getPath() { return $this->path ? $this->path : $this->getDestPath(); }
-	public function getDestPath() { return self::filesDir() . $this->getID(); }
-	public function getVariantPath($variant='')
+	public function getHref() : string { return $this->href; }
+	public function getPath() : string { return $this->path ? $this->path : $this->getDestPath(); }
+	public function getDestPath() : string { return self::filesDir() . $this->getID(); }
+	public function getVariantPath(string $variant=null) : string
 	{
 		if ($variant)
 		{
 			# security
-			$variant = preg_replace("/[^a-z]/", '', $variant);
+// 			$variant = preg_replace("/[^a-z]/", '', $variant);
 			$variant = "_$variant";
 		}
 		return $this->getPath() . $variant;

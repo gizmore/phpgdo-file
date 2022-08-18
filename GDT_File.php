@@ -38,7 +38,6 @@ class GDT_File extends GDT_Object
 	    parent::__construct();
 		$this->table(GDO_File::table());
 		$this->icon('file');
-// 		$this->defaultSize();
 	}
 	
 	############
@@ -245,17 +244,13 @@ class GDT_File extends GDT_Object
 		return $var ? GDO_File::getById($var) : null;
 	}
 	
-// 	public function getVar()
-// 	{
-// 		return $this->toVar($this->getValue());
-// 	}
-	
 	public function getInput() : ?string
 	{
 		if ($this->multiple)
 		{
-			throw new \Exception("Multiple files not supported yet.");
+			return $this->getInputMultiple();
 		}
+		
 		$files = $this->getFiles($this->getName());
 		if (count($files))
 		{
@@ -268,7 +263,6 @@ class GDT_File extends GDT_Object
 					$file->insert();
 					$this->beforeCopy($file);
 					$file->copy();
-// 					$this->var($file->getID());
 				}
 			}
 			
@@ -276,7 +270,18 @@ class GDT_File extends GDT_Object
 			$k = array_key_first($files);
 			return $files[$k]->getID();
 		}
+		
+		elseif (isset($this->inputs[$this->name]))
+		{
+			return $this->inputs[$this->name];
+		}
+
 		return null;
+	}
+	
+	private function getInputMultiple() : ?string
+	{
+		throw new \Exception("Multiple files not supported yet.");
 	}
 	
 	/**

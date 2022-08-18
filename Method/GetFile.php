@@ -49,7 +49,7 @@ final class GetFile extends Method
 		);
 	}
 	
-	public function executeWithId(string $id, string $variant='', bool $nodisp=null)
+	public function executeWithId(string $id, string $variant=null, bool $nodisp=null)
 	{
 		if (!($file = GDO_File::getById($id)))
 		{
