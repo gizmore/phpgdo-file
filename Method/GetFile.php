@@ -5,7 +5,6 @@ use GDO\Core\Method;
 use GDO\File\GDO_File;
 use GDO\Util\FileUtil;
 use GDO\Net\Stream;
-use GDO\Util\Common;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
 
@@ -17,6 +16,9 @@ use GDO\Core\GDT_String;
  * The single GDT_File and GDT_ImageFile add a column to your GDO.
  * The multi GDT_Files and GDT_ImageFiles require you to implement a GDO table inheriting from GDT_FileTable.
  * 
+ * @author gizmore
+ * @version 7.0.1
+ * @since 6.0.0
  * @see GDO_File
  * @see GDO_FileTable
  * @see GDT_File
@@ -24,10 +26,6 @@ use GDO\Core\GDT_String;
  * @see GDT_ImageFile
  * @see GDT_ImageFiles
  * @see WithImageFile
- * 
- * @author gizmore@wechall.net
- * @version 6.08
- * @since 6.00
  */
 final class GetFile extends Method
 {
@@ -37,20 +35,21 @@ final class GetFile extends Method
 	
 	public function gdoParameters() : array
 	{
-		return array(
+		return [
 			GDT_Int::make('file')->notNull(),
 			GDT_String::make('variant'),
-		);
+		];
 	}
 	
 	public function execute()
 	{
 		return $this->executeWithId(
-			Common::getRequestString('file'),
-			Common::getRequestString('variant', ''));
+			$this->gdoParameterVar('file'),
+			$this->gdoParameterVar('variant'),
+		);
 	}
 	
-	public function executeWithId($id, $variant='', $nodisp=null)
+	public function executeWithId(string $id, string $variant='', bool $nodisp=null)
 	{
 		if (!($file = GDO_File::getById($id)))
 		{
