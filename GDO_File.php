@@ -14,18 +14,18 @@ use GDO\User\GDO_User;
 use GDO\Util\FileUtil;
 use GDO\Util\Filewalker;
 use GDO\Net\Stream;
-use GDO\Core\Website;
 use GDO\Core\GDO_Exception;
 use GDO\Core\GDO_Error;
 
 /**
  * File database storage.
- * Images are converted to resize variants via cronjob.
+ * Images are converted to resize variants via cronjob. @TODO use php module imagick?
  * 
  * @example GDO_File::fromPath($path)->insert()->copy();
- * @example GDO_File::find(1)->
+ * @example GDO_File::find(1)
+ * 
  * @author gizmore
- * @version 6.10.3
+ * @version 7.0.1
  * @since 6.1.0
  *
  * @see GDT_File
@@ -100,20 +100,15 @@ final class GDO_File extends GDO
 	{
 	    # Delete variants
 		Filewalker::traverse(self::filesDir(), "/^{$this->getID()}_/", [$this, 'deleteVariant']);
+
 		# delete original
 		$path = $this->getDestPath();
-		if (!@unlink($path))
-		{
-		    Website::error('err_delete_file', [$path]);
-		}
+		FileUtil::removeFile($path);
 	}
 	
 	public function deleteVariant($entry, $fullpath)
 	{
-	    if (!@unlink($fullpath))
-	    {
-	        Website::error('err_delete_file', [$fullpath]);
-	    }
+		FileUtil::removeFile($fullpath);
 	}
 	
 	public function toJSON()
@@ -203,11 +198,8 @@ final class GDO_File extends GDO
 	############
 	/**
 	 * This saves the uploaded file to the files folder and inserts the db row.
-	 * 
-	 * @throws GDO_Error
-	 * @return self
 	 */
-	public function copy()
+	public function copy() : self
 	{
 		FileUtil::createDir(self::filesDir());
 		if (!@copy($this->path, $this->getDestPath()))
