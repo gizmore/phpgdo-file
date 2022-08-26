@@ -486,7 +486,17 @@ class GDT_File extends GDT_Object
 	###################
 	private function getTempDir($key='')
 	{
-		return GDO_TEMP_PATH.'flow/'.GDO_Session::instance()->getID().'/'.$key;
+		$id = 0;
+		if (module_enabled('Session'))
+		{
+			$sess = GDO_Session::instance();
+			if ($sess)
+			{
+				$id = $sess->getID();
+				
+			}
+		}
+		return GDO_TEMP_PATH.'flow/'.$id.'/'.$key;
 	}
 	
 	private function getChunkDir($key)
