@@ -188,7 +188,7 @@ class GDT_File extends GDT_Object
 			'minfiles' => $this->minfiles,
 			'maxfiles' => $this->maxfiles,
 			'preview' => $this->preview,
-			'previewHREF' => $this->previewHREF,
+			'previewHREF' => isset($this->previewHREF) ? $this->previewHREF : null,
 			'selectedFiles' => $this->initJSONFiles(),
 		];
 	}
