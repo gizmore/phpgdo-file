@@ -205,7 +205,10 @@ class GDT_File extends GDT_Object
 		/** @var $file GDO_File **/
 		foreach ($files as $file)
 		{
-			$file->tempHref($this->href);
+			if (isset($this->href))
+			{
+				$file->tempHref($this->href);
+			}
 			$json[] = $file->toJSON();
 		}
 		return $json;

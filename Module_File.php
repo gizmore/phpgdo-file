@@ -25,14 +25,15 @@ use GDO\Core\GDT_Filesize;
 final class Module_File extends GDO_Module
 {
 	public int $priority = 10;
+// 	public string $license = 'MIT'; # MIT is GDO compat
 
 	##############
 	### Module ###
 	##############
-// 	public function getDependencies() : array
-// 	{
-// 		return [];
-// 	}
+	public function getDependencies() : array
+	{
+		return ['Session'];
+	}
 
 	public function getFriendencies() : array
 	{
@@ -46,6 +47,17 @@ final class Module_File extends GDO_Module
 		];
 	}
 	
+	public function getLicenseFilenames() : array
+	{
+		return [
+			'bower_components/flow.js/LICENSE',
+			'LICENSE',
+		];
+	}
+	
+	############
+	### Init ###
+	############
 	public function onLoadLanguage() : void
 	{
 		$this->loadLanguage('lang/file');
@@ -55,14 +67,6 @@ final class Module_File extends GDO_Module
 	{
 		$this->addBowerJS("flow.js/dist/flow.js");
 		$this->addJS('js/gdo-flow.js');
-	}
-	
-	public function getLicenseFilenames() : array
-	{
-		return [
-			'bower_components/flow.js/LICENSE',
-			'LICENSE',
-		];
 	}
 	
 	##############
