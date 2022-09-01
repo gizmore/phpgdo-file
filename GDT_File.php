@@ -15,6 +15,7 @@ use GDO\Core\GDO_Module;
 use GDO\UI\WithImageSize;
 use GDO\Core\GDT_Response;
 use GDO\Core\Debug;
+use GDO\Core\GDT;
 
 /**
  * File input and upload backend for flow.js
@@ -96,7 +97,11 @@ class GDT_File extends GDT_Object
 
 	public function displayPreviewHref(GDO_File $file) : string
 	{
-		return str_replace('{id}', $file->getID(), $this->previewHREF);
+		if (isset($this->previewHREF))
+		{
+			return str_replace('{id}', $file->getID(), $this->previewHREF);
+		}
+		return GDT::EMPTY_STRING;
 	}
 	
 	##################
