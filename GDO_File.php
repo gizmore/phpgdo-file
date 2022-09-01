@@ -9,7 +9,6 @@ use GDO\Core\GDT_String;
 use GDO\Core\GDT_Template;
 use GDO\Core\GDT_UInt;
 use GDO\Core\Debug;
-use GDO\Core\Application;
 use GDO\User\GDO_User;
 use GDO\Util\FileUtil;
 use GDO\Util\Filewalker;
@@ -127,14 +126,15 @@ final class GDO_File extends GDO
 	###############
 	public static function filesDir()
 	{
-	    if (Application::$INSTANCE->isUnitTests())
-	    {
-	        return GDO_PATH . 'files_test/';
-	    }
-	    else
-	    {
-	        return GDO_PATH . 'files/';
-	    }
+		return GDO_PATH . trim(GDO_FILES_DIR, '/') . '/';
+// 	    if (Application::$INSTANCE->isUnitTests())
+// 	    {
+// 	        return GDO_PATH . 'files_test/';
+// 	    }
+// 	    else
+// 	    {
+// 	        return GDO_PATH . 'files/';
+// 	    }
 	}
 	
 	/**

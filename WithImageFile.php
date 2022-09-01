@@ -7,7 +7,7 @@ use GDO\UI\WithImageSize;
  * Add this trait for image related file stuff.
  * 
  * @author gizmore
- * @version 7.0.0
+ * @version 7.0.1
  * @since 6.7.0
  */
 trait WithImageFile
@@ -100,12 +100,12 @@ trait WithImageFile
 		$dest = $original->getDestPath() . "_$name";
 		if (copy($src, $dest))
 		{
-			$file = GDO_File::fromForm(array(
+			$file = GDO_File::fromForm([
 				'name' => $original->getName(),
 				'size' => $original->getSize(),
 				'type' => $original->getType(),
 				'tmp_name' => $dest,
-			));
+			]);
 			return $file;
 		}
 	}

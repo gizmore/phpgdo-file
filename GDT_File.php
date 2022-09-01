@@ -249,10 +249,10 @@ class GDT_File extends GDT_Object
 	
 	public function getInput() : ?string
 	{
-		if ($this->multiple)
-		{
-			return $this->getInputMultiple();
-		}
+// 		if ($this->multiple)
+// 		{
+// 			return $this->getInputMultiple();
+// 		}
 		
 		$files = $this->getFiles($this->getName());
 		if (count($files))
@@ -269,9 +269,17 @@ class GDT_File extends GDT_Object
 				}
 			}
 			
-			# Return first file
-			$k = array_key_first($files);
-			return $files[$k]->getID();
+			if ($this->multiple)
+			{
+				return array_map(function(GDO_File $file) {
+					return $file->getID();
+				}, $files);
+			}
+			else # Return first file
+			{
+				$k = array_key_first($files);
+				return $files[$k]->getID();
+			}
 		}
 		
 		elseif (isset($this->inputs[$this->name]))
@@ -280,11 +288,6 @@ class GDT_File extends GDT_Object
 		}
 
 		return null;
-	}
-	
-	private function getInputMultiple() : ?string
-	{
-		throw new \Exception("Multiple files not supported yet.");
 	}
 	
 	/**
@@ -298,20 +301,9 @@ class GDT_File extends GDT_Object
 	
 	public function getInitialFile() : ?GDO_File
 	{
-// 		$var = $this->getRequestVar($this->formVariable(), $this->var);
-// 		$var = $this->getInput($this->getName());
 		$var = $this->getVar();
 		return $var ? GDO_File::getById($var) : null;
 	}
-	
-// 	public function setGDOData(GDO $gdo=null)
-// 	{
-// // 		if ($gdo->hasVar($this->name))
-// 		{
-// 			$this->var = $gdo->gdoVar($this->name);
-// 		}
-// 		return $this;
-// 	}
 	
 	public function getGDOData() : ?array
 	{

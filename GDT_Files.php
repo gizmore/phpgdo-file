@@ -58,13 +58,14 @@ class GDT_Files extends GDT_File
 	
 	public function getInitialFiles() : array
 	{
-		if ( (!$this->gdo) || (!$this->gdo->isPersisted()) )
+		if ( (!isset($this->gdo)) || (!$this->gdo->isPersisted()) )
 		{
 			return []; # has no stored files as its not even saved yet.
 		}
 		# Fetch all from relation table as GDO_File array.
-		return $this->fileTable->select('*, files_file_t.*')->
+		return $this->fileTable->select('files_file_t.*')->
 			fetchTable(GDO_File::table())->
+			joinObject('files_file')->
 			where('files_object='.$this->gdo->getID())->
 			exec()->fetchAllObjects();
 	}
