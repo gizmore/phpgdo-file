@@ -15,6 +15,7 @@ use GDO\Util\Filewalker;
 use GDO\Net\Stream;
 use GDO\Core\GDO_Exception;
 use GDO\Core\GDO_Error;
+use GDO\Core\GDT;
 
 /**
  * File database storage.
@@ -31,6 +32,9 @@ use GDO\Core\GDO_Error;
  */
 final class GDO_File extends GDO
 {
+	public string $path;
+	public string $variant = GDT::EMPTY_STRING;
+	
 	###########
 	### GDO ###
 	###########
@@ -56,25 +60,50 @@ final class GDO_File extends GDO
 	public function isImageType() { return str_starts_with($this->getType(), 'image/'); }
 	public function getWidth() { return $this->gdoVar('file_width'); }
 	public function getHeight() { return $this->gdoVar('file_height'); }
-	public function getContents() {}
-	public function streamTo(GDO_User $user) { return Stream::serveTo($user, $this); }
+// 	public function getContents() {}
 	
-	public function renderHTML() : string { return GDT_Template::php('File', 'cell/file.php', ['gdo'=>$this]); }
-	public function renderCard() : string { return GDT_Template::php('File', 'card/file.php', ['gdo'=>$this]); }
-
-	public $variant = '';
-	
-	public $path;
-	public function tempPath($path=null)
+	##############
+	### Render ###
+	##############
+	public function streamTo(GDO_User $user)
 	{
-		$this->path = $path;
+		return Stream::serveTo($user, $this);
+	}
+	
+// 	public function renderHTML() : string
+// 	{
+// 		return GDT_Template::php('File', 'file_html.php', ['gdo' => $this]);
+// 	}
+	
+// 	public function renderCard() : string
+// 	{
+// 		return GDT_Template::php('File', 'file_card.php', ['file' => $this]);
+// 	}
+
+	public function tempPath(?string $path=null)
+	{
+		if ($path === null)
+		{
+			unset($this->path);
+		}
+		else
+		{
+			$this->path = $path;
+		}
 		return $this;
 	}
 	
-	private $href;
-	public function tempHref($href=null)
+	private string $href;
+	public function tempHref(string $href=null)
 	{
-		$this->href = $href;
+		if ($href === null)
+		{
+			unset($this->href);
+		}
+		else
+		{
+			$this->href = $href;
+		}
 		return $this;
 	}
 	
@@ -127,14 +156,6 @@ final class GDO_File extends GDO
 	public static function filesDir()
 	{
 		return GDO_PATH . trim(GDO_FILES_DIR, '/') . '/';
-// 	    if (Application::$INSTANCE->isUnitTests())
-// 	    {
-// 	        return GDO_PATH . 'files_test/';
-// 	    }
-// 	    else
-// 	    {
-// 	        return GDO_PATH . 'files/';
-// 	    }
 	}
 	
 	/**

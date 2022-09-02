@@ -200,7 +200,7 @@ class GDT_File extends GDT_Object
 	
 	public function renderCard() : string
 	{
-	    return GDT_Template::php('File', 'card/filecard.php', ['field' => $this]);
+	    return GDT_Template::php('File', 'file_card.php', ['field' => $this]);
 	}
 	
 	public function initJSONFiles() : array
