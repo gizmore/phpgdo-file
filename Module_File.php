@@ -25,7 +25,7 @@ use GDO\Core\GDT_Filesize;
 final class Module_File extends GDO_Module
 {
 	public int $priority = 10;
-// 	public string $license = 'MIT'; # MIT is GDO compat
+	public string $license = 'MIT'; # MIT is GDO compat
 
 	##############
 	### Module ###
