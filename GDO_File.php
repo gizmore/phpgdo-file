@@ -6,7 +6,6 @@ use GDO\Core\GDT_AutoInc;
 use GDO\Date\GDT_Duration;
 use GDO\Core\GDT_Filesize;
 use GDO\Core\GDT_String;
-use GDO\Core\GDT_Template;
 use GDO\Core\GDT_UInt;
 use GDO\Core\Debug;
 use GDO\User\GDO_User;
@@ -108,7 +107,7 @@ final class GDO_File extends GDO
 	}
 	
 	public function getHref() : string { return $this->href; }
-	public function getPath() : string { return $this->path ? $this->path : $this->getDestPath(); }
+	public function getPath() : string { return isset($this->path) ? $this->path : $this->getDestPath(); }
 	public function getDestPath() : string { return self::filesDir() . $this->getID(); }
 	public function getVariantPath(string $variant=null) : string
 	{
@@ -229,7 +228,7 @@ final class GDO_File extends GDO
 			    html(Debug::shortpath($this->path)), 
 			    html(Debug::shortpath($this->getDestPath()))]);
 		}
-		$this->path = null;
+		unset($this->path);
 		return $this;
 	}
 	

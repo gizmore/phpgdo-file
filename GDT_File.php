@@ -16,6 +16,7 @@ use GDO\UI\WithImageSize;
 use GDO\Core\GDT_Response;
 use GDO\Core\Debug;
 use GDO\Core\GDT;
+use GDO\UI\TextStyle;
 
 /**
  * File input and upload backend for flow.js
@@ -181,7 +182,12 @@ class GDT_File extends GDT_Object
 	
 	public function renderHTML() : string
 	{
-		return GDT_Template::php('File', 'file_html.php', ['field' => $this, 'gdo' => $this->getValue()]);
+		if (!($gdo = $this->getValue()))
+		{
+			return TextStyle::italic(t('none'));
+		}
+		return GDT_Template::php('File', 'file_html.php', [
+			'field' => $this, 'gdo' => $gdo]);
 	}
 	
 	public function configJSON() : array
