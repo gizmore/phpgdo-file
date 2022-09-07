@@ -192,16 +192,19 @@ class GDT_File extends GDT_Object
 	
 	public function configJSON() : array
 	{
-		return [
-			'mimes' => $this->mimes,
-			'minsize' => $this->minsize,
-			'maxsize' => $this->maxsize,
-			'minfiles' => $this->minfiles,
-			'maxfiles' => $this->maxfiles,
-			'preview' => $this->preview,
-			'previewHREF' => isset($this->previewHREF) ? $this->previewHREF : null,
-			'selectedFiles' => $this->initJSONFiles(),
-		];
+		return array_merge(
+			parent::configJSON(),
+			[
+				'mimes' => $this->mimes,
+				'minsize' => $this->minsize,
+				'maxsize' => $this->maxsize,
+				'minfiles' => $this->minfiles,
+				'maxfiles' => $this->maxfiles,
+				'preview' => $this->preview,
+				'previewHREF' => isset($this->previewHREF) ? $this->previewHREF : null,
+				'selectedFiles' => $this->initJSONFiles(),
+			]
+		);
 	}
 	
 	public function renderCard() : string
