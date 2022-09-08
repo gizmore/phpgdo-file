@@ -29,8 +29,8 @@ class GDT_Files extends GDT_File
 	### STUB GDT methods ###
 	########################
 	public function gdoColumnNames() : array { return GDT::EMPTY_ARRAY; } # NO DB column, we have a GDO_File table for this.
-	public function gdoColumnDefine() : string { return ''; } # NO DB column. Your GDO_FileTable has the data.
-	public function getGDOData() : ?array { return null; } # Only relation table. Handled by onCreate and onUpdate.
+	public function gdoColumnDefine() : string { return GDT::EMPTY_STRING; } # NO DB column. Your GDO_FileTable has the data.
+	public function getGDOData() : array { return GDT::EMPTY_ARRAY; } # Only relation table. Handled by onCreate and onUpdate.
 // 	public function setGDOData(GDO $gdo=null) { return $this; }
 	
 	/**

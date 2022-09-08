@@ -319,7 +319,7 @@ class GDT_File extends GDT_Object
 		return $var ? GDO_File::getById($var) : null;
 	}
 	
-	public function getGDOData() : ?array
+	public function getGDOData() : array
 	{
 		if ($file = $this->getValue())
 		{

@@ -138,7 +138,7 @@ final class GDO_File extends GDO
 		FileUtil::removeFile($fullpath);
 	}
 	
-	public function toJSON()
+	public function toJSON() : array
 	{
 		return array_merge(parent::toJSON(), [
 			'id' => $this->getID(),
