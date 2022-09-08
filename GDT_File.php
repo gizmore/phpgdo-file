@@ -285,9 +285,9 @@ class GDT_File extends GDT_Object
 			
 			if ($this->multiple)
 			{
-				return array_map(function(GDO_File $file) {
+				return json_encode(array_map(function(GDO_File $file) {
 					return $file->getID();
-				}, $files);
+				}, $files));
 			}
 			else # Return first file
 			{
