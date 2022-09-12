@@ -139,7 +139,7 @@ class GDT_File extends GDT_Object
 	### XXX: Bound checking is done before a possible conversion.
 	###	  It could make sense to set those values to 10,10,2048,2048 or something.
 	###	  This could prevent DoS with giant images.
-	### @see GDT_File
+	### @see WithImageFile
 	##############
 	public ?int $minWidth = null;
 	public function minWidth(int $minWidth=null) : self { $this->minWidth = $minWidth; return $this; }
@@ -149,6 +149,15 @@ class GDT_File extends GDT_Object
 	public function minHeight(int $minHeight=null) : self { $this->minHeight = $minHeight; return $this; }
 	public ?int $maxHeight = null;
 	public function maxHeight(int $maxHeight=null) : self { $this->maxHeight = $maxHeight; return $this; }
+	
+	public function exactSize(int $width, int $height) : self
+	{
+		$this->minWidth = $width;
+		$this->maxWidth = $width;
+		$this->minHeight = $height;
+		$this->maxHeight = $height;
+		return $this;
+	}
 	
 	##############
 	### Action ###
