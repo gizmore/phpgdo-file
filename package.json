@@ -1,11 +1,11 @@
 {
   "name": "phpgdo-file",
-  "version": "7.0.0",
-  "description": "File handling for GDOv7",
+  "version": "7.0.1",
+  "description": "File handling for GDOv7.",
   "main": "Module_File.php",
   "repository": "ssh://git@github.com/gizmore/phpgdo",
   "author": "gizmore",
-  "license": "GDOv7-LICENSE",
+  "license": "MIT",
   "dependencies": {
     "flow.js": "https://github.com/flowjs/flow.js.git"
   }
