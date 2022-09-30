@@ -55,7 +55,11 @@ final class GetFile extends Method
 		{
 			return $this->error('err_unknown_file', null, 404);
 		}
-		
+		return $this->executeWithFile($file, $variant, $nodisp);
+	}
+	
+	public function executeWithFile(GDO_File $file, string $variant=null, bool $nodisp=null)
+	{
 		$path = $file->getVariantPath($variant);
 		if (!FileUtil::isFile($path))
 		{
