@@ -18,6 +18,7 @@ use GDO\Core\GDT;
 
 /**
  * File database storage.
+ * 
  * Images are converted to resize variants via cronjob. @TODO use php module imagick?
  * 
  * @example GDO_File::fromPath($path)->insert()->copy();
@@ -81,11 +82,8 @@ final class GDO_File extends GDO
 
 	public function tempPath(?string $path=null)
 	{
-		if ($path === null)
-		{
-			unset($this->path);
-		}
-		else
+		unset($this->path);
+		if ($path)
 		{
 			$this->path = $path;
 		}
@@ -95,11 +93,8 @@ final class GDO_File extends GDO
 	private string $href;
 	public function tempHref(string $href=null)
 	{
-		if ($href === null)
-		{
-			unset($this->href);
-		}
-		else
+		unset($this->href);
+		if ($href)
 		{
 			$this->href = $href;
 		}
@@ -168,7 +163,6 @@ final class GDO_File extends GDO
 			'file_size' => $values['size'],
 			'file_type' => $values['type']
 		])->tempPath($values['tmp_name']);
-		
 		if ($file->isImageType())
 		{
 			list($width, $height) = getimagesize($file->getPath());
@@ -222,7 +216,7 @@ final class GDO_File extends GDO
 	public function copy() : self
 	{
 		FileUtil::createDir(self::filesDir());
-		if (!@copy($this->path, $this->getDestPath()))
+		if (!copy($this->path, $this->getDestPath()))
 		{
 			throw new GDO_Error('err_upload_move', [
 			    html(Debug::shortpath($this->path)), 
