@@ -127,7 +127,7 @@ trait WithImageFile
 		list($width, $height) = getimagesize($file->getPath());
 		if ( ($this->maxWidth !== null) && ($width > $this->maxWidth) )
 		{
-			return $this->error('err_image_too_wide', [$this->maxWidth]);
+			return $this->error('err_image_too_wide', [$this->maxWidth, $this->maxHeight]);
 		}
 		if ( ($this->minWidth !== null) && ($width < $this->minWidth) )
 		{
@@ -135,7 +135,7 @@ trait WithImageFile
 		}
 		if ( ($this->maxHeight !== null) && ($height > $this->maxHeight) )
 		{
-			return $this->error('err_image_too_high', [$this->maxHeight]);
+			return $this->error('err_image_too_high', [$this->maxWidth, $this->maxHeight]);
 		}
 		if ( ($this->minHeight !== null) && ($height < $this->minHeight) )
 		{

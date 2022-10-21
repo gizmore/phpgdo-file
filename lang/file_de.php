@@ -32,4 +32,11 @@ return [
 	# 7.0.0
 	'mt_cron_variants' => 'Bild-Varianten',
 	'err_upload_min_files' => 'Sie müssen mindestens %s Datei(en) hochladen.',
+
+	# 7.0.1
+	'err_image_too_wide' => 'Ihr Bild überschreitet die maximale Breite von %s x %s Pixel.',
+	'err_image_not_wide_enough' => 'Ihr Bild ist nicht breit genug. Es muss mindestens %s Pixel breit sein.',
+	'err_image_too_high' => 'Ihr Bild überschreitet die maximale Höhe von %s x %s Pixel.',
+	'err_image_not_high_enough' => 'Ihr Bild ist nicht hoch genug. Es muss mindestens %s Pixel hoch sein.',
+
 ];

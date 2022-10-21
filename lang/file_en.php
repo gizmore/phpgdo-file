@@ -33,4 +33,10 @@ return [
 	'mt_cron_variants' => 'Image Variants',
 	'err_upload_min_files' => 'You have to upload at least %s file(s).',
 
+	# 7.0.1	
+	'err_image_too_wide' => 'Your image exceeds the max width of %s x %s pixels.',
+	'err_image_not_wide_enough' => 'Your image is not wide enough. It has to be at least %s pixels wide.',
+	'err_image_too_high' => 'Your image exceeds the max height of %s x %s pixels.',
+	'err_image_not_high_enough' => 'Your image is not high enough. It has to be at least %s pixels high.',
+	
 ];

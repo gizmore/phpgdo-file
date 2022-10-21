@@ -32,4 +32,10 @@ return [
 	# 7.0.0
 	'mt_cron_variants' => 'Varianti immagine',
 	'err_upload_min_files' => 'Devi caricare almeno %s file.',
+	# 7.0.1
+	'err_image_too_wide' => 'La tua immagine supera la larghezza massima di %s x %s pixel.',
+	'err_image_not_wide_enough' => 'La tua immagine non è abbastanza larga. Deve essere largo almeno %s pixel.',
+	'err_image_too_high' => 'La tua immagine supera l\'altezza massima di %s x %s pixel.',
+	'err_image_not_high_enough' => 'La tua immagine non è abbastanza alta. Deve essere alto almeno %s pixel.',
+
 ];
