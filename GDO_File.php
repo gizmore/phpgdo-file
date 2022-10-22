@@ -21,7 +21,10 @@ use GDO\Core\GDT;
  * 
  * Images are converted to resize variants via cronjob. @TODO use php module imagick?
  * 
- * @example GDO_File::fromPath($path)->insert()->copy();
+ * This GDO table is not trivial testable, as it ruins valid files because no file is copied.
+ * Instead we run an own little test and create a file for other modules.
+ * 
+ * @example GDO_File::fromPath($path)->insert();
  * @example GDO_File::find(1)
  * 
  * @author gizmore
@@ -34,6 +37,11 @@ final class GDO_File extends GDO
 {
 	public string $path;
 	public string $variant = GDT::EMPTY_STRING;
+	
+	public function isTestable(): bool
+	{
+		return false;
+	}
 	
 	###########
 	### GDO ###
@@ -210,10 +218,15 @@ final class GDO_File extends GDO
 	############
 	### Copy ###
 	############
+	public function gdoAfterCreate($gdo): void
+	{
+		$this->copy();
+	}
+	
 	/**
 	 * This saves the uploaded file to the files folder and inserts the db row.
 	 */
-	public function copy() : self
+	public function copy(): self
 	{
 		FileUtil::createDir(self::filesDir());
 		if (!copy($this->path, $this->getDestPath()))

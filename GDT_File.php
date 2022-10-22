@@ -286,9 +286,8 @@ class GDT_File extends GDT_Object
 				/** @var $file GDO_File **/
 				if (!$file->isPersisted())
 				{
+// 					$this->beforeCopy($file);
 					$file->insert();
-					$this->beforeCopy($file);
-					$file->copy();
 				}
 			}
 			
@@ -447,9 +446,8 @@ class GDT_File extends GDT_Object
 	                {
 	                    if (!$file->isPersisted())
 	                    {
+// 	                        $this->beforeCopy($file);
 	                        $file->insert();
-	                        $this->beforeCopy($file);
-	                        $file->copy();
 	                        if ($this->gdo)
 	                        {
 	                            if (!$this->gdo->gdoIsTable())
@@ -608,7 +606,6 @@ class GDT_File extends GDT_Object
 				'tmp_name' => $dir.'/0',
 		    ]);
 			$file->insert();
-			$file->copy();
 			file_put_contents($dir.'/id', $file->getID());
 			return $file;
 		}
