@@ -109,7 +109,7 @@ final class GDO_File extends GDO
 		return $this;
 	}
 	
-	public function getHref() : string { return $this->href; }
+	public function getHref() : string { return isset($this->href) ? $this->href : GDT::EMPTY_STRING; }
 	public function getPath() : string { return isset($this->path) ? $this->path : $this->getDestPath(); }
 	public function getDestPath() : string { return self::filesDir() . $this->getID(); }
 	public function getVariantPath(string $variant=null) : string
