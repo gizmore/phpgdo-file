@@ -226,7 +226,7 @@ final class GDO_File extends GDO
 	/**
 	 * This saves the uploaded file to the files folder and inserts the db row.
 	 */
-	public function copy(): self
+	public function copy(): static
 	{
 		FileUtil::createDir(self::filesDir());
 		if (!copy($this->path, $this->getDestPath()))

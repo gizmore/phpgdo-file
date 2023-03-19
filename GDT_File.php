@@ -32,7 +32,7 @@ class GDT_File extends GDT_Object
 	
 	public bool $multiple = false;
 	
-	public function defaultLabel() : self { return $this->label('file'); }
+	public function defaultLabel(): static { return $this->label('file'); }
 	public function isImageFile() : bool { return false; }
 	
 	protected function __construct()
@@ -51,7 +51,7 @@ class GDT_File extends GDT_Object
 	 */
 	public array $mimes = [];
 	
-	public function mime(...$mime) : self
+	public function mime(...$mime): static
 	{
 		$this->mimes = array_merge($this->mimes, $mime);
 		return $this;
@@ -61,20 +61,20 @@ class GDT_File extends GDT_Object
 	### Size ###
 	############
 	public ?int $minsize = null;
-	public function minsize(int $minsize) : self
+	public function minsize(int $minsize): static
 	{
 		$this->minsize = $minsize;
 		return $this;
 	}
 	
 	public ?int $maxsize = 1024 * 4096; # 4MB
-	public function maxsize(int $maxsize) : self
+	public function maxsize(int $maxsize): static
 	{
 		$this->maxsize = $maxsize;
 		return $this;
 	}
 	
-	public function defaultSize() : self
+	public function defaultSize(): static
 	{
 	    return $this->maxsize(Module_File::instance()->cfgUploadMaxSize());
 	}
@@ -83,14 +83,14 @@ class GDT_File extends GDT_Object
 	### Preview ###
 	###############
 	public bool $preview = false;
-	public function preview(bool $preview=true) : self
+	public function preview(bool $preview=true): static
 	{
 		$this->preview = $preview;
 		return $this;
 	}
 	
 	public string $previewHREF;
-	public function previewHREF(string $previewHREF=null) : self
+	public function previewHREF(string $previewHREF=null): static
 	{
 		$this->previewHREF = $previewHREF;
 		return $this->preview($previewHREF !== null);
@@ -109,14 +109,14 @@ class GDT_File extends GDT_Object
 	### File count ###
 	##################
 	public int $minfiles = 0;
-	public function minfiles(int $minfiles) : self
+	public function minfiles(int $minfiles): static
 	{
 		$this->minfiles = $minfiles;
 		return $minfiles > 0 ? $this->notNull() : $this;
 	}
 	
 	public int $maxfiles = 1;
-	public function maxfiles(int $maxfiles) : self
+	public function maxfiles(int $maxfiles): static
 	{
 		$this->maxfiles = $maxfiles;
 		return $this;
@@ -142,15 +142,15 @@ class GDT_File extends GDT_Object
 	### @see WithImageFile
 	##############
 	public ?int $minWidth = null;
-	public function minWidth(int $minWidth=null) : self { $this->minWidth = $minWidth; return $this; }
+	public function minWidth(int $minWidth=null): static { $this->minWidth = $minWidth; return $this; }
 	public ?int $maxWidth = null;
-	public function maxWidth(int $maxWidth=null) : self { $this->maxWidth = $maxWidth; return $this; }
+	public function maxWidth(int $maxWidth=null): static { $this->maxWidth = $maxWidth; return $this; }
 	public ?int $minHeight = null;
-	public function minHeight(int $minHeight=null) : self { $this->minHeight = $minHeight; return $this; }
+	public function minHeight(int $minHeight=null): static { $this->minHeight = $minHeight; return $this; }
 	public ?int $maxHeight = null;
-	public function maxHeight(int $maxHeight=null) : self { $this->maxHeight = $maxHeight; return $this; }
+	public function maxHeight(int $maxHeight=null): static { $this->maxHeight = $maxHeight; return $this; }
 	
-	public function exactSize(int $width, int $height) : self
+	public function exactSize(int $width, int $height): static
 	{
 		$this->minWidth = $width;
 		$this->maxWidth = $width;
@@ -366,13 +366,13 @@ class GDT_File extends GDT_Object
 	### Delete ###
 	##############
 	public bool $noDelete = false;
-	public function noDelete(bool $noDelete=true) : self
+	public function noDelete(bool $noDelete=true): static
 	{
 	    $this->noDelete = $noDelete;
 	    return $this;
 	}
 	
-	public function notNull(bool $notNull=true) : self
+	public function notNull(bool $notNull=true): static
 	{
 	    $this->noDelete = $notNull;
 	    return parent::notNull($notNull);

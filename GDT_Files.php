@@ -23,7 +23,7 @@ use GDO\Core\GDT_Response;
 class GDT_Files extends GDT_File
 {
 	public function isTestable() : bool { return false; } # @TODO: Make it testable
-	public function defaultLabel() : self { return $this->label('files'); }
+	public function defaultLabel(): static { return $this->label('files'); }
 	
 	########################
 	### STUB GDT methods ###
@@ -44,7 +44,7 @@ class GDT_Files extends GDT_File
 	public GDO $fileTable;
 	public GDO $fileObjectTable;
 	
-	public function fileTable(GDO_FileTable $table) : self
+	public function fileTable(GDO_FileTable $table): static
 	{
 		$this->fileTable = $table;
 		$this->fileObjectTable = $table->gdoFileObjectTable();

@@ -30,7 +30,7 @@ trait WithImageFile
 	### Variant ###
 	###############
 	public string $variant;
-	public function variant(string $variant) : self { $this->variant = $variant; return $this; }
+	public function variant(string $variant): static { $this->variant = $variant; return $this; }
 	
 	############
 	### HREF ###
