@@ -5,7 +5,7 @@ use GDO\UI\GDT_Image;
 
 /**
  * An image file array with N:M table.
- * 
+ *
  * @version 7.0.0
  * @since 6.11.0
  * @see GDT_Files
@@ -17,10 +17,9 @@ use GDO\UI\GDT_Image;
  */
 final class GDT_ImageFiles extends GDT_Files
 {
+
 	use WithImageFile;
-	
-	public function defaultLabel(): static { return $this->label('images'); }
-	
+
 	protected function __construct()
 	{
 		parent::__construct();
@@ -28,14 +27,16 @@ final class GDT_ImageFiles extends GDT_Files
 		$this->mime(GDT_Image::GIF, GDT_Image::JPG, GDT_Image::PNG);
 	}
 
-	public function displayPreviewHref(GDO_File $file) : string
+	public function defaultLabel(): self { return $this->label('images'); }
+
+	public function displayPreviewHref(GDO_File $file): string
 	{
 		$href = parent::displayPreviewHref($file);
-	    if ($this->variant)
-	    {
-	        $href .= '&variant='.$this->variant;
-	    }
-	    return $href;
+		if ($this->variant)
+		{
+			$href .= '&variant=' . $this->variant;
+		}
+		return $href;
 	}
 
 }

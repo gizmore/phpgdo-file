@@ -1,12 +1,12 @@
 <?php
 namespace GDO\File\Method;
 
-use GDO\Core\Method;
-use GDO\File\GDO_File;
-use GDO\Util\FileUtil;
-use GDO\Net\Stream;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
+use GDO\Core\Method;
+use GDO\File\GDO_File;
+use GDO\Net\Stream;
+use GDO\Util\FileUtil;
 
 /**
  * Serve a file from partially db(meta) and fs.
@@ -15,10 +15,10 @@ use GDO\Core\GDT_String;
  * In your fields you can choose between 4 major GDT: GDT_File, GDT_Files, GDT_ImageFile, GDT_ImageFiles
  * The single GDT_File and GDT_ImageFile add a column to your GDO.
  * The multi GDT_Files and GDT_ImageFiles require you to implement a GDO table inheriting from GDT_FileTable.
- * 
- * @author gizmore
+ *
  * @version 7.0.1
  * @since 6.0.0
+ * @author gizmore
  * @see GDO_File
  * @see GDO_FileTable
  * @see GDT_File
@@ -29,18 +29,19 @@ use GDO\Core\GDT_String;
  */
 final class GetFile extends Method
 {
-    public function isTrivial() : bool { return false; } # no trivial method testing.
-    
-	public function getPermission() : ?string { return 'admin'; }
-	
-	public function gdoParameters() : array
+
+	public function isTrivial(): bool { return false; } # no trivial method testing.
+
+	public function getPermission(): ?string { return 'admin'; }
+
+	public function gdoParameters(): array
 	{
 		return [
 			GDT_Int::make('file')->notNull(),
 			GDT_String::make('variant'),
 		];
 	}
-	
+
 	public function execute()
 	{
 		return $this->executeWithId(
@@ -48,8 +49,8 @@ final class GetFile extends Method
 			$this->gdoParameterVar('variant'),
 		);
 	}
-	
-	public function executeWithId(string $id, string $variant=null, bool $nodisp=null)
+
+	public function executeWithId(string $id, string $variant = null, bool $nodisp = null)
 	{
 		if (!($file = GDO_File::getById($id)))
 		{
@@ -57,18 +58,18 @@ final class GetFile extends Method
 		}
 		return $this->executeWithFile($file, $variant, $nodisp);
 	}
-	
-	public function executeWithFile(GDO_File $file, string $variant=null, bool $nodisp=null)
+
+	public function executeWithFile(GDO_File $file, string $variant = null, bool $nodisp = null)
 	{
 		$path = $file->getVariantPath($variant);
 		if (!FileUtil::isFile($path))
 		{
 			return $this->error('err_file_not_found', [htmlspecialchars($path)]);
 		}
-		
+
 		$nodisp = $nodisp === null ? (!isset($_REQUEST['nodisposition'])) : $nodisp;
-		
+
 		Stream::serve($file, $variant, !$nodisp);
 	}
-	
+
 }

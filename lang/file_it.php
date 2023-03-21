@@ -1,5 +1,6 @@
 <?php
 namespace GDO\File\lang;
+
 return [
 	'file' => 'file',
 	'files' => 'File',
@@ -7,14 +8,14 @@ return [
 	'images' => 'Imagini',
 	'file_type' => 'Tipo di file',
 	'filesize' => 'Grandezza file',
-	'_filesize' => array(
+	'_filesize' => [
 		'B',
 		'KB',
 		'MB',
 		'GB',
 		'TB',
 		'PB',
-	),
+	],
 	'err_file_too_large' => 'Il file supera la grandezza massimale di %s',
 	'err_copy_chunk_failed' => 'Uma parte dell`imagime non é stato copiato dal server.',
 	'err_image_format_not_supported' => 'Il file del tipo %s non viene supportato come formato imagine.',
