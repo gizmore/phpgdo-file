@@ -1,6 +1,7 @@
 <?php
 namespace GDO\File\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Secret;
 use GDO\Core\GDT_String;
 use GDO\Core\Method;
@@ -22,7 +23,7 @@ class Download extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		$user = GDO_User::current();
 		$file = $this->getFile();
@@ -33,7 +34,7 @@ class Download extends Method
 		}
 
 		$variant = $this->gdoParameterVar('variant');
-		GetFile::make()->executeWithId($file->getID(), $variant);
+		return GetFile::make()->executeWithId($file->getID(), $variant);
 	}
 
 	/**

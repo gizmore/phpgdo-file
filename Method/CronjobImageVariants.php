@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File\Method;
 
 use GDO\Core\GDO;
@@ -17,23 +18,24 @@ use GDO\Util\FileUtil;
  * This might be useful when you change the variants for a GDT_Files.
  * Up to date variants are created on every cronjob call.
  *
+ * @version 7.0.3
+ * @since 6.2.0
  * @author gizmore@wechall.net
- *
  */
 final class CronjobImageVariants extends MethodCronjob
 {
 
-	private $numFiles = 0;
-	private $numVariantFiles = 0;
-	private $numConverted = 0;
-	private $numErased = 0;
+	private int $numFiles = 0;
+	private int $numVariantFiles = 0;
+	private int $numConverted = 0;
+	private int $numErased = 0;
 
 	public function getMethodTitle(): string
 	{
 		return t('mt_cron_variants');
 	}
 
-	public function run()
+	public function run(): void
 	{
 		foreach (ModuleLoader::instance()->getModules() as $module)
 		{
@@ -86,7 +88,7 @@ final class CronjobImageVariants extends MethodCronjob
 		# select all gdo's as file
 		$query = $table->select($gdt->name . '_t.*')-> # from GDO but only joined columns
 		joinObject($gdt->name)->
-		where($gdt->identifier() . ' IS NOT NULL')-> # where gdt_file is not null
+		where($gdt->name . ' IS NOT NULL')-> # where gdt_file is not null
 		fetchTable(GDO_File::table()); # and fetch as file.
 
 		$result = $query->exec();

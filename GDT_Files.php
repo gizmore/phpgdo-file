@@ -48,9 +48,9 @@ class GDT_Files extends GDT_File
 	public function getGDOData(): array { return GDT::EMPTY_ARRAY; }
 
 	/**
-	 * @var $value GDO_File[]
+	 * @var $value null|bool|int|float|string|object|GDO_File[]
 	 */
-	public function toVar($value): ?string { return null; }
+	public function toVar(null|bool|int|float|string|object|array $value): ?string { return null; }
 
 	#########################
 	### GDT_File override ###

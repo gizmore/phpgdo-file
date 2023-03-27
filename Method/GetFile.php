@@ -1,6 +1,7 @@
 <?php
 namespace GDO\File\Method;
 
+use GDO\Core\GDT;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
 use GDO\Core\Method;
@@ -42,7 +43,7 @@ final class GetFile extends Method
 		];
 	}
 
-	public function execute()
+	public function execute(): GDT
 	{
 		return $this->executeWithId(
 			$this->gdoParameterVar('file'),

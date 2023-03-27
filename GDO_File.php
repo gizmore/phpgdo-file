@@ -97,15 +97,15 @@ final class GDO_File extends GDO
 	{
 		$file = self::blank([
 			'file_name' => $values['name'],
-			'file_size' => $values['size'],
+			'file_size' => (string) $values['size'],
 			'file_type' => $values['type'],
 		])->tempPath($values['tmp_name']);
 		if ($file->isImageType())
 		{
 			[$width, $height] = getimagesize($file->getPath());
 			$file->setVars([
-				'file_width' => $width,
-				'file_height' => $height,
+				'file_width' => (string) $width,
+				'file_height' => (string) $height,
 			]);
 		}
 		return $file;
