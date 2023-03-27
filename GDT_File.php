@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace GDO\File;
 
 use GDO\Core\Debug;
+use GDO\Core\GDO;
 use GDO\Core\GDO_Module;
 use GDO\Core\GDT;
 use GDO\Core\GDT_Object;
@@ -330,7 +331,7 @@ class GDT_File extends GDT_Object
 	### Render ###
 	##############
 
-	public function mime(...$mime): self
+	public function mime(string ...$mime): self
 	{
 		$this->mimes = array_merge($this->mimes, $mime);
 		return $this;
@@ -384,7 +385,7 @@ class GDT_File extends GDT_Object
 		return $minfiles > 0 ? $this->notNull() : $this;
 	}
 
-	public function notNull(bool $notNull = true): self
+	public function notNull(bool $notNull = true): static
 	{
 		$this->noDelete = $notNull;
 		return parent::notNull($notNull);
@@ -426,8 +427,8 @@ class GDT_File extends GDT_Object
 					elseif (!$file->isPersisted())
 					{
 						$file->insert();
-						if ($this->gdo)
-						{
+//						if ($this->gdo)
+//						{
 							if (!$this->gdo->gdoIsTable())
 							{
 								if (!$this->multiple)
@@ -435,7 +436,7 @@ class GDT_File extends GDT_Object
 									$this->gdo->setVar($this->name, $file->getID());
 								}
 							}
-						}
+//						}
 						if (!$this->multiple)
 						{
 							$this->var($file->getID());
@@ -592,7 +593,7 @@ class GDT_File extends GDT_Object
 	{
 		$id = array_shift($ids); # only first id
 
-		if (($this->gdo) && ($this->gdo->isPersisted())) # GDO possibly has a file
+		if ($this->gdo->isPersisted()) # GDO possibly has a file
 		{
 			if ($this->gdo instanceof GDO_Module)
 			{

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File;
 
 use GDO\UI\WithImageSize;
@@ -6,7 +7,7 @@ use GDO\UI\WithImageSize;
 /**
  * Add this trait for image related file stuff.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.7.0
  * @author gizmore
  */
@@ -38,7 +39,7 @@ trait WithImageFile
 		return $href;
 	}
 
-	protected function onFlowFinishTests(string $key, $file)
+	protected function onFlowFinishTests(string $key, $file): false|string
 	{
 		if (false !== ($error = parent::onFlowFinishTests($key, $file)))
 		{
@@ -55,7 +56,7 @@ trait WithImageFile
 	### HREF ###
 	############
 
-	private function onFlowTestImageDimension(string $key, $file)
+	private function onFlowTestImageDimension(string $key, $file): false|string
 	{
 		return false;
 	}
@@ -64,12 +65,10 @@ trait WithImageFile
 	### Flow test ###
 	#################
 
-	protected function beforeCopy(GDO_File $file)
+	protected function beforeCopy(GDO_File $file): void
 	{
 		ImageResize::derotate($file);
-
 		$this->createScaledVersions($file);
-
 // 		if ($this->resize)
 // 		{
 // 			$this->createFileToScale($file, 'original');
@@ -77,7 +76,7 @@ trait WithImageFile
 // 		}
 	}
 
-	public function createScaledVersions(GDO_File $original)
+	public function createScaledVersions(GDO_File $original): void
 	{
 		foreach ($this->scaledVersions as $name => $dim)
 		{
@@ -93,23 +92,23 @@ trait WithImageFile
 // 	public $convert;
 // 	public function convertTo($mime) { $this->convert = $mime; return $this; }
 
-	public function createFileToScale(GDO_File $original, $name)
+	public function createFileToScale(GDO_File $original, string $name): ?GDO_File
 	{
 		$src = $original->getPath();
 		$dest = $original->getDestPath() . "_$name";
 		if (copy($src, $dest))
 		{
-			$file = GDO_File::fromForm([
+			return GDO_File::fromForm([
 				'name' => $original->getName(),
 				'size' => $original->getSize(),
 				'type' => $original->getType(),
 				'tmp_name' => $dest,
 			]);
-			return $file;
 		}
+		return null;
 	}
 
-	protected function validateFile(GDO_File $file)
+	protected function validateFile(GDO_File $file): bool
 	{
 		if (parent::validateFile($file))
 		{
@@ -118,7 +117,7 @@ trait WithImageFile
 		return false;
 	}
 
-	protected function validateImageFile(GDO_File $file)
+	protected function validateImageFile(GDO_File $file): bool
 	{
 		[$width, $height] = getimagesize($file->getPath());
 		if (($this->maxWidth !== null) && ($width > $this->maxWidth))
@@ -144,13 +143,13 @@ trait WithImageFile
 	### Validation ###
 	##################
 
-	public function scaledVersion($name, $width, $height, $format = null)
+	public function scaledVersion($name, $width, $height, $format = null): static
 	{
 		$this->scaledVersions[$name] = [$width, $height, $format];
 		return $this;
 	}
 
-	public function variant(string $variant): self
+	public function variant(string $variant): static
 	{
 		$this->variant = $variant;
 		return $this;
