@@ -570,7 +570,7 @@ class GDT_File extends GDT_Object
 		return ' capture="capture"';
 	}
 
-	public function getValidationValue(): array
+	public function getValidationValue()
 	{
 		$new = $this->getFiles($this->name);
 		if (count($new))

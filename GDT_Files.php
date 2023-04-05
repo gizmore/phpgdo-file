@@ -48,7 +48,7 @@ class GDT_Files extends GDT_File
 	public function getGDOData(): array { return GDT::EMPTY_ARRAY; }
 
 	/**
-	 * @var $value null|bool|int|float|string|object|GDO_File[]
+	 * @var null|bool|int|float|string|object|GDO_File[] $value
 	 */
 	public function toVar(null|bool|int|float|string|object|array $value): ?string { return null; }
 
@@ -150,7 +150,7 @@ class GDT_Files extends GDT_File
 	/**
 	 * This is the delete action that removes the files.
 	 */
-	public function onDeleteFiles(array $ids)
+	public function onDeleteFiles(array $ids): void
 	{
 		foreach ($ids as $id)
 		{

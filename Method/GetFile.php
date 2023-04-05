@@ -70,7 +70,7 @@ final class GetFile extends Method
 
 		$nodisp = $nodisp === null ? (!isset($_REQUEST['nodisposition'])) : $nodisp;
 
-		Stream::serve($file, $variant, !$nodisp);
+		return Stream::serve($file, $variant, !$nodisp);
 	}
 
 }
