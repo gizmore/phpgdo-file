@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File;
 
 use GDO\Core\GDO;
@@ -12,7 +13,7 @@ use GDO\User\GDO_User;
  * Inherit from this table when using GDT_Files and provide your table to it.
  * Override gdoFileObjectTable() and return your GDO that shall have the files.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.1.0
  * @author gizmore
  */
@@ -30,10 +31,7 @@ class GDO_FileTable extends GDO
 
 	public function gdoAbstract(): bool { return $this->gdoFileObjectTable() === null; }
 
-	/**
-	 * @return GDO
-	 */
-	public function gdoFileObjectTable() {}
+	public function gdoFileObjectTable(): ?GDO { return null; }
 
 	public function gdoColumns(): array
 	{
@@ -49,24 +47,19 @@ class GDO_FileTable extends GDO
 	##############
 	### Getter ###
 	##############
-	/**
-	 * @return GDO_File
-	 */
-	public function getFile() { return $this->gdoValue('files_file'); }
 
-	/**
-	 * @return GDO_User
-	 */
-	public function getCreator() { return $this->gdoValue('files_creator'); }
+	public function getFile(): ?GDO_File { return $this->gdoValue('files_file'); }
 
-	public function canEdit(GDO_User $user) { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
+	public function getCreator(): GDO_User { return $this->gdoValue('files_creator'); }
+
+	public function canEdit(GDO_User $user): bool { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
 
 	###########
 	### ACL ###
 	###########
 
-	public function getCreatorID() { return $this->gdoVar('files_creator'); }
+	public function getCreatorID(): string { return $this->gdoVar('files_creator'); }
 
-	public function canDelete(GDO_User $user) { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
+	public function canDelete(GDO_User $user): bool { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
 
 }

@@ -1,10 +1,10 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File;
 
 use GDO\Core\Debug;
 use GDO\Core\GDO;
 use GDO\Core\GDO_Error;
-use GDO\Core\GDO_Exception;
 use GDO\Core\GDT;
 use GDO\Core\GDT_AutoInc;
 use GDO\Core\GDT_Filesize;
@@ -17,14 +17,14 @@ use GDO\Util\FileUtil;
 use GDO\Util\Filewalker;
 
 /**
- * File database storage.
+ * File database storage. Files are served from the file system.
  *
  * Images are converted to resize variants via cronjob. @TODO use php module imagick?
  *
  * This GDO table is not trivial testable, as it ruins valid files because no file is copied.
  * Instead we run an own little test and create a file for other modules.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.1.0
  *
  * @author gizmore
@@ -37,19 +37,21 @@ final class GDO_File extends GDO
 {
 
 	public string $path;
+
 	public string $variant = GDT::EMPTY_STRING;
+
 	private string $href;
+
 
 	###########
 	### GDO ###
 	###########
 
+
 	/**
-	 * @param string $contents
-	 *
-	 * @return self
+	 * @throws GDO_Error
 	 */
-	public static function fromString($name, $content)
+	public static function fromString(string $name, string $content): self
 	{
 		# Create temp dir
 		$tempDir = GDO_TEMP_PATH . 'file';
@@ -60,10 +62,11 @@ final class GDO_File extends GDO
 		return self::fromPath($name, $tempPath);
 	}
 
+
 	/**
-	 * @throws GDO_Exception
+	 * @throws GDO_Error
 	 */
-	public static function fromPath(string $name, string $path): GDO_File
+	public static function fromPath(string $name, string $path): self
 	{
 		if (!FileUtil::isFile($path))
 		{
@@ -75,25 +78,18 @@ final class GDO_File extends GDO
 			'type' => mime_content_type($path),
 			'tmp_name' => $path,
 		];
-		return self::fromForm($values)->tempPath($path);
+		return self::fromForm($values);
 	}
 
-	public function tempPath(?string $path = null)
+
+	public function tempPath(?string $path = null): self
 	{
-		unset($this->path);
-		if ($path)
-		{
-			$this->path = $path;
-		}
+		$this->path = $path??null;
 		return $this;
 	}
 
-	/**
-	 * @param array $values
-	 *
-	 * @return self
-	 */
-	public static function fromForm(array $values)
+
+	public static function fromForm(array $values): self
 	{
 		$file = self::blank([
 			'file_name' => $values['name'],
@@ -109,36 +105,58 @@ final class GDO_File extends GDO
 			]);
 		}
 		return $file;
-	}	public function getName(): ?string { return $this->gdoVar('file_name'); }
+	}
 
-	public function isImageType() { return str_starts_with($this->getType(), 'image/'); }
 
-	public function getType() { return $this->gdoVar('file_type'); }
+	public function getName(): ?string
+	{
+		return $this->gdoVar('file_name');
+	}
+
+
+	public function isImageType(): bool
+	{
+		return str_starts_with($this->getType(), 'image/');
+	}
+
+
+	public function getType(): string { return $this->gdoVar('file_type'); }
+
 
 	public function getPath(): string { return isset($this->path) ? $this->path : $this->getDestPath(); }	public function renderName(): string { return html($this->getName()); }
 
 	public function getDestPath(): string { return self::filesDir() . $this->getID(); }
 
-	public static function filesDir()
+	public static function filesDir(): string
 	{
-		return GDO_PATH . trim(GDO_FILES_DIR, '/') . '/';
+		return GDO_PATH . trim(GDO_FILES_DIR, '\\/') . '/';
 	}
 
-	public function displaySize() { return FileUtil::humanFilesize($this->getSize()); }
+	public static function getByName(string $name): ?self
+	{
+		return self::getBy('file_name', $name);
+	}
 
-	public function getSize() { return $this->gdoVar('file_size'); }
+	public function displaySize(): string { return FileUtil::humanFilesize($this->getSize()); }
 
-	public function getWidth() { return $this->gdoVar('file_width'); }	public function isTestable(): bool
+	public function getSize(): ?int { return $this->gdoValue('file_size'); }
+
+	public function getWidth(): ?int { return $this->gdoValue('file_width'); }
+
+
+	public function isTestable(): bool
 	{
 		return false;
 	}
 
-	public function getHeight() { return $this->gdoVar('file_height'); }
+	public function getHeight(): ?int { return $this->gdoValue('file_height'); }
 
-	public function streamTo(GDO_User $user)
+	public function streamTo(GDO_User $user): bool
 	{
-		return Stream::serveTo($user, $this);
-	}	public function gdoColumns(): array
+		return Stream::file($this);
+	}
+
+	public function gdoColumns(): array
 	{
 		return [
 			GDT_AutoInc::make('file_id')->label('id'),
@@ -152,7 +170,7 @@ final class GDO_File extends GDO
 		];
 	}
 
-	public function tempHref(string $href = null)
+	public function tempHref(string $href = null): static
 	{
 		unset($this->href);
 		if ($href)
@@ -162,8 +180,10 @@ final class GDO_File extends GDO
 		return $this;
 	}
 
-	public function getHref(): string { return isset($this->href) ? $this->href : GDT::EMPTY_STRING; }
-// 	public function getContents() {}
+	public function getHref(): string
+	{
+		return $this->href ?? GDT::EMPTY_STRING;
+	}
 
 	##############
 	### Render ###
@@ -173,45 +193,29 @@ final class GDO_File extends GDO
 	{
 		if ($variant)
 		{
-			# security
-// 			$variant = preg_replace("/[^a-z]/", '', $variant);
 			$variant = "_$variant";
 		}
 		return $this->getPath() . $variant;
 	}
 
-// 	public function renderHTML() : string
-// 	{
-// 		return GDT_Template::php('File', 'file_html.php', ['gdo' => $this]);
-// 	}
-
-// 	public function renderCard() : string
-// 	{
-// 		return GDT_Template::php('File', 'file_card.php', ['file' => $this]);
-// 	}
-
-	public function deleteVariant($entry, $fullpath)
+	/**
+	 * @throws GDO_Error
+	 */
+	public function deleteVariant(string $entry, string $fullpath): bool
 	{
-		FileUtil::removeFile($fullpath);
+		return FileUtil::removeFile($fullpath);
 	}
 
 
-
-
-
-
-
-
-
-
 	/**
-	 * Delete variant- and original file when deleted from database.
+	 * Delete variants and original file when deleted from database.
+	 *
+	 * @throws GDO_Error
 	 */
 	public function gdoAfterDelete(GDO $gdo): void
 	{
 		# Delete variants
 		Filewalker::traverse(self::filesDir(), "/^{$this->getID()}_/", [$this, 'deleteVariant']);
-
 		# delete original
 		$path = $this->getDestPath();
 		FileUtil::removeFile($path);
@@ -229,14 +233,13 @@ final class GDO_File extends GDO
 		]);
 	}
 
-	###############
-	### Factory ###
-	###############
-
 
 	############
 	### Copy ###
 	############
+	/**
+	 * @throws GDO_Error
+	 */
 	public function gdoAfterCreate($gdo): void
 	{
 		$this->copy();
@@ -244,6 +247,8 @@ final class GDO_File extends GDO
 
 	/**
 	 * This saves the uploaded file to the files folder and inserts the db row.
+	 *
+	 * @throws GDO_Error
 	 */
 	public function copy(): self
 	{

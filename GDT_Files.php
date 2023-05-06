@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File;
 
 use GDO\Core\GDO;
@@ -13,7 +14,7 @@ use GDO\Util\Arrays;
  * You have to create and specify a file table that is M:N for your GDO and the GDO_File entry.
  * Upload is handled by inheritance of GDT_File.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.8.0
  * @author gizmore@wechall.net
  * @see GDT_File
@@ -47,9 +48,6 @@ class GDT_Files extends GDT_File
 
 	public function getGDOData(): array { return GDT::EMPTY_ARRAY; }
 
-	/**
-	 * @var null|bool|int|float|string|object|GDO_File[] $value
-	 */
 	public function toVar(null|bool|int|float|string|object|array $value): ?string { return null; }
 
 	#########################

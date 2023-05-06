@@ -1,6 +1,8 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File\Method;
 
+use GDO\Core\GDO_ArgException;
 use GDO\Core\GDT;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
@@ -17,7 +19,7 @@ use GDO\Util\FileUtil;
  * The single GDT_File and GDT_ImageFile add a column to your GDO.
  * The multi GDT_Files and GDT_ImageFiles require you to implement a GDO table inheriting from GDT_FileTable.
  *
- * @version 7.0.1
+ * @version 7.0.3
  * @since 6.0.0
  * @author gizmore
  * @see GDO_File
@@ -31,7 +33,7 @@ use GDO\Util\FileUtil;
 final class GetFile extends Method
 {
 
-	public function isTrivial(): bool { return false; } # no trivial method testing.
+	public function isTrivial(): bool { return false; }
 
 	public function getPermission(): ?string { return 'admin'; }
 
@@ -43,15 +45,18 @@ final class GetFile extends Method
 		];
 	}
 
+	/**
+	 * @throws GDO_ArgException
+	 */
 	public function execute(): GDT
 	{
 		return $this->executeWithId(
 			$this->gdoParameterVar('file'),
-			$this->gdoParameterVar('variant'),
+			(string) $this->gdoParameterVar('variant'),
 		);
 	}
 
-	public function executeWithId(string $id, string $variant = null, bool $nodisp = null)
+	public function executeWithId(string $id, string $variant = '', bool $nodisp = null): GDT
 	{
 		if (!($file = GDO_File::getById($id)))
 		{
@@ -60,7 +65,7 @@ final class GetFile extends Method
 		return $this->executeWithFile($file, $variant, $nodisp);
 	}
 
-	public function executeWithFile(GDO_File $file, string $variant = null, bool $nodisp = null)
+	public function executeWithFile(GDO_File $file, string $variant = null, bool $nodisp = null): GDT
 	{
 		$path = $file->getVariantPath($variant);
 		if (!FileUtil::isFile($path))
@@ -68,6 +73,7 @@ final class GetFile extends Method
 			return $this->error('err_file_not_found', [htmlspecialchars($path)]);
 		}
 
+		# @TODO: $_REQUEST vars are not working anymore.
 		$nodisp = $nodisp === null ? (!isset($_REQUEST['nodisposition'])) : $nodisp;
 
 		return Stream::serve($file, $variant, !$nodisp);
