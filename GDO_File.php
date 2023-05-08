@@ -209,16 +209,20 @@ final class GDO_File extends GDO
 
 	/**
 	 * Delete variants and original file when deleted from database.
-	 *
-	 * @throws GDO_Exception
 	 */
 	public function gdoAfterDelete(GDO $gdo): void
 	{
-		# Delete variants
-		Filewalker::traverse(self::filesDir(), "/^{$this->getID()}_/", [$this, 'deleteVariant']);
-		# delete original
-		$path = $this->getDestPath();
-		FileUtil::removeFile($path);
+		try
+		{
+			# Delete variants
+			Filewalker::traverse(self::filesDir(), "/^{$this->getID()}_/", [$this, 'deleteVariant']);
+			# delete original
+			FileUtil::removeFile($this->getDestPath());
+		}
+		catch (GDO_Exception $ex)
+		{
+			Debug::debugException($ex);
+		}
 	}
 
 

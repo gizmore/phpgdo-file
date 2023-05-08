@@ -109,9 +109,9 @@ class GDT_File extends GDT_Object
 	##############
 
 	/**
-	 * @return null|bool|int|float|string|array|object
+	 * @return mixed
 	 */
-	public function getValue(): bool|int|float|string|array|null|object
+	public function getValue(): mixed
 	{
 		$files = array_merge($this->getInitialFiles(), Arrays::arrayed($this->getFiles($this->name)));
 		return array_pop($files);

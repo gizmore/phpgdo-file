@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace GDO\File;
 
 use Exception;
@@ -13,13 +14,16 @@ use GDO\Core\GDO_Exception;
  * @TODO Use imagemagick and a system/exec call. PHP needs too much mem.
  *
  * @author gizmore
- * @version 6.10.1
+ * @version 7.0.3
  * @since 3.0.0
  */
 final class ImageResize
 {
 
-	public static function resize(GDO_File $file, $toWidth, $toHeight, $toFormat = null)
+	/**
+	 * @throws GDO_Exception
+	 */
+	public static function resize(GDO_File $file, $toWidth, $toHeight, $toFormat = null): true
 	{
 		// Gather metadata
 		[$source_width, $source_height] = getimagesize($file->path);
@@ -104,8 +108,8 @@ final class ImageResize
 			/*
 			 * Copy cropped region from temporary image into the desired GD image
 			 */
-			$x0 = ceil(($temp_width - $toWidth) / 2);
-			$y0 = ceil(($temp_height - $toHeight) / 2);
+			$x0 = (int) ceil(($temp_width - $toWidth) / 2);
+			$y0 = (int) ceil(($temp_height - $toHeight) / 2);
 			$desired_gdim = imagecreatetruecolor($toWidth, $toHeight);
 			imagecopy(
 				$desired_gdim,
@@ -142,7 +146,7 @@ final class ImageResize
 		return true;
 	}
 
-	private static function orientation(GDO_File $file)
+	private static function orientation(GDO_File $file): int
 	{
 		if (!function_exists('exif_read_data'))
 		{
@@ -150,21 +154,22 @@ final class ImageResize
 		}
 		try
 		{
-			$exif = @exif_read_data($file->path);
-			return (int)(@$exif['Orientation']);
+			$exif = exif_read_data($file->path);
+			return (int) (@$exif['Orientation']);
 		}
 		catch (Exception $e)
 		{
 			return -2;
 		}
-		return 0;
 	}
 
-	public static function getGDImage(GDO_File $file)
+	/**
+	 * @throws GDO_Exception
+	 */
+	public static function getGDImage(GDO_File $file): \GdImage
 	{
 		switch ($file->getType())
 		{
-// 			case "image/bmp": $source = ImageFromBMP::load($file->path); break;
 			case 'image/gif':
 				$source = imagecreatefromgif($file->path);
 				break;
@@ -180,7 +185,10 @@ final class ImageResize
 		return $source;
 	}
 
-	public static function derotate(GDO_File $file)
+	/**
+	 * @throws GDO_Exception
+	 */
+	public static function derotate(GDO_File $file): GDO_File
 	{
 		$rotation = self::orientation($file);
 
@@ -207,7 +215,6 @@ final class ImageResize
 
 		switch ($file->getType())
 		{
-// 			case "image/bmp": imagewbmp($desired_gdim, $file->path); break;
 			case 'image/gif':
 				imagegif($image2, $file->path);
 				break;
