@@ -2,7 +2,7 @@
 namespace GDO\File;
 
 use Exception;
-use GDO\Core\GDO_Error;
+use GDO\Core\GDO_Exception;
 
 /**
  * Utility that resizes images.
@@ -136,7 +136,7 @@ final class ImageResize
 				imagepng($desired_gdim, $file->path);
 				break;
 			default:
-				throw new GDO_Error('err_image_format_not_supported', [$toFormat]);
+				throw new GDO_Exception('err_image_format_not_supported', [$toFormat]);
 		}
 		imagedestroy($desired_gdim);
 		return true;
@@ -175,7 +175,7 @@ final class ImageResize
 				$source = imagecreatefrompng($file->path);
 				break;
 			default:
-				throw new GDO_Error('err_image_format_not_supported', [$file->getType()]);
+				throw new GDO_Exception('err_image_format_not_supported', [$file->getType()]);
 		}
 		return $source;
 	}
@@ -218,7 +218,7 @@ final class ImageResize
 				imagepng($image2, $file->path);
 				break;
 			default:
-				throw new GDO_Error('err_image_format_not_supported', [$file->getType()]);
+				throw new GDO_Exception('err_image_format_not_supported', [$file->getType()]);
 		}
 
 		imagedestroy($image2);

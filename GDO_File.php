@@ -4,7 +4,7 @@ namespace GDO\File;
 
 use GDO\Core\Debug;
 use GDO\Core\GDO;
-use GDO\Core\GDO_Error;
+use GDO\Core\GDO_Exception;
 use GDO\Core\GDT;
 use GDO\Core\GDT_AutoInc;
 use GDO\Core\GDT_Filesize;
@@ -49,7 +49,7 @@ final class GDO_File extends GDO
 
 
 	/**
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public static function fromString(string $name, string $content): self
 	{
@@ -64,13 +64,13 @@ final class GDO_File extends GDO
 
 
 	/**
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public static function fromPath(string $name, string $path): self
 	{
 		if (!FileUtil::isFile($path))
 		{
-			throw new GDO_Error('err_file_not_found', [$path]);
+			throw new GDO_Exception('err_file_not_found', [$path]);
 		}
 		$values = [
 			'name' => $name,
@@ -199,7 +199,7 @@ final class GDO_File extends GDO
 	}
 
 	/**
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public function deleteVariant(string $entry, string $fullpath): bool
 	{
@@ -210,7 +210,7 @@ final class GDO_File extends GDO
 	/**
 	 * Delete variants and original file when deleted from database.
 	 *
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public function gdoAfterDelete(GDO $gdo): void
 	{
@@ -238,7 +238,7 @@ final class GDO_File extends GDO
 	### Copy ###
 	############
 	/**
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public function gdoAfterCreate($gdo): void
 	{
@@ -248,14 +248,14 @@ final class GDO_File extends GDO
 	/**
 	 * This saves the uploaded file to the files folder and inserts the db row.
 	 *
-	 * @throws GDO_Error
+	 * @throws GDO_Exception
 	 */
 	public function copy(): self
 	{
 		FileUtil::createDir(self::filesDir());
 		if (!copy($this->path, $this->getDestPath()))
 		{
-			throw new GDO_Error('err_upload_move', [
+			throw new GDO_Exception('err_upload_move', [
 				html(Debug::shortpath($this->path)),
 				html(Debug::shortpath($this->getDestPath()))]);
 		}

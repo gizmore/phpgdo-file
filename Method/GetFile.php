@@ -2,7 +2,7 @@
 declare(strict_types=1);
 namespace GDO\File\Method;
 
-use GDO\Core\GDO_ArgException;
+use GDO\Core\GDO_ArgError;
 use GDO\Core\GDT;
 use GDO\Core\GDT_Int;
 use GDO\Core\GDT_String;
@@ -46,7 +46,7 @@ final class GetFile extends Method
 	}
 
 	/**
-	 * @throws GDO_ArgException
+	 * @throws GDO_ArgError
 	 */
 	public function execute(): GDT
 	{
