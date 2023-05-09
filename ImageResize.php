@@ -3,7 +3,9 @@ declare(strict_types=1);
 namespace GDO\File;
 
 use Exception;
+use GDO\CLI\CLI;
 use GDO\Core\GDO_Exception;
+use GDO\Core\Logger;
 
 /**
  * Utility that resizes images.
@@ -148,17 +150,22 @@ final class ImageResize
 
 	private static function orientation(GDO_File $file): int
 	{
-		if (!function_exists('exif_read_data'))
-		{
-			return -1;
-		}
 		try
 		{
+			if (!function_exists('exif_read_data'))
+			{
+				return -1;
+			}
 			$exif = exif_read_data($file->path);
-			return (int) (@$exif['Orientation']);
+			return (int) $exif['Orientation'];
 		}
-		catch (Exception $e)
+		catch (\Throwable $ex)
 		{
+			Logger::logError($ex->getMessage());
+			if (CLI::isCLI())
+			{
+				echo $ex->getMessage();
+			}
 			return -2;
 		}
 	}
