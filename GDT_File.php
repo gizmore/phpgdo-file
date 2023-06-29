@@ -188,7 +188,7 @@ class GDT_File extends GDT_Object
 				$id = $sess->getID();
 			}
 		}
-		return GDO_TEMP_PATH . 'flow/' . $id . '/' . $key;
+		return GDO_TEMP_PATH . 'flow/' . $id . '/' . $key . '/';
 	}
 
 	private function getFileFromDir(string $dir): ?GDO
