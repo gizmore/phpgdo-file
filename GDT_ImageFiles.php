@@ -27,7 +27,10 @@ final class GDT_ImageFiles extends GDT_Files
 		$this->mime(GDT_Image::GIF, GDT_Image::JPG, GDT_Image::PNG);
 	}
 
-	public function defaultLabel(): self { return $this->label('images'); }
+	public function gdtDefaultLabel(): ?string
+    {
+        return 'images';
+    }
 
 	public function displayPreviewHref(GDO_File $file): string
 	{

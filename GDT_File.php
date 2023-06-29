@@ -79,7 +79,10 @@ class GDT_File extends GDT_Object
 		$this->icon('file');
 	}
 
-	public function defaultLabel(): self { return $this->label('file'); }
+	public function gdtDefaultLabel(): ?string
+    {
+        return 'file';
+    }
 
 	public function renderForm(): string
 	{

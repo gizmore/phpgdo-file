@@ -18,9 +18,9 @@ final class GDT_MimeType extends GDT_String
 	public ?int $max = 96;
 	public bool $caseSensitive = true;
 
-	public function defaultLabel(): self
+	public function gdtDefaultLabel(): ?string
 	{
-		return $this->label('file_type');
+		return 'file_type';
 	}
 
 }

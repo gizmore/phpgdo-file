@@ -38,7 +38,11 @@ class GDT_Files extends GDT_File
 
 // 	public function setGDOData(GDO $gdo=null) { return $this; }
 
-	public function defaultLabel(): self { return $this->label('files'); } # cannot be saved as column.
+	public function gdtDefaultLabel(): ?string
+    {
+        return 'files';
+    }
+
 
 	##################
 	### File Table ###
