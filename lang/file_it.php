@@ -7,7 +7,6 @@ return [
 	'image' => 'Imagine',
 	'images' => 'Imagini',
     'file_icon' => 'Icon',
-	'file_type' => 'Tipo di file',
 	'err_file_too_large' => 'Il file supera la grandezza massimale di %s',
 	'err_copy_chunk_failed' => 'Uma parte dell`imagime non é stato copiato dal server.',
 	'err_image_format_not_supported' => 'Il file del tipo %s non viene supportato come formato imagine.',

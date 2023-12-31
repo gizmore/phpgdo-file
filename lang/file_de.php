@@ -6,7 +6,6 @@ return [
 	'files' => 'Dateien',
 	'image' => 'Bild',
 	'images' => 'Bilder',
-	'file_type' => 'Dateityp',
     'file_icon' => 'Icon',
 	'err_file_too_large' => 'Die Datei überschreitet die maximale Größe von %s.',
 	'err_copy_chunk_failed' => 'Ein Teil des Bildes konnte innerhalb des Servers nicht kopiert werden.',
