@@ -157,7 +157,7 @@ final class ImageResize
 				return -1;
 			}
 			$exif = exif_read_data($file->path);
-			return (int) $exif['Orientation'];
+			return (int) @$exif['Orientation'];
 		}
 		catch (\Throwable $ex)
 		{
