@@ -662,7 +662,7 @@ class GDT_File extends GDT_Object
 	private function getChunkDir(string $key): string
 	{
 		$chunkFilename = str_replace('/', '', $_REQUEST['flowFilename']);
-		return $this->getTempDir($key) . '/' . $chunkFilename;
+		return $this->getTempDir($key) . $chunkFilename;
 	}
 
 	private function onFlowError(string $error, ...$args): GDT
@@ -734,11 +734,11 @@ class GDT_File extends GDT_Object
 
 		# Write user chosen name to a file for later
 		$nameFile = $chunkDir . '/name';
-		@file_put_contents($nameFile, $file['name']);
+		file_put_contents($nameFile, $file['name']);
 
 		# Write mime type for later use
 		$mimeFile = $chunkDir . '/mime';
-		@file_put_contents($mimeFile, mime_content_type($chunkDir . '/temp'));
+		file_put_contents($mimeFile, mime_content_type($chunkDir . '/temp'));
 
 		# Run finishing tests to deny.
 		if (false !== ($error = $this->onFlowFinishTests($key, $file)))
@@ -748,7 +748,7 @@ class GDT_File extends GDT_Object
 		}
 
 		# Move single temp to chunk 0
-		if (!@rename($finalFile, $chunkDir . '/0'))
+		if (!rename($finalFile, $chunkDir . '/0'))
 		{
 			return 'Cannot move temp file.';
 		}

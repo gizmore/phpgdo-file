@@ -119,6 +119,10 @@ trait WithImageFile
 
 	protected function validateImageFile(GDO_File $file): bool
 	{
+        if (!($dim = getimagesize($file->getPath())))
+        {
+            return $this->error('err_image_format_not_supported', [t('unknown')]);
+        }
 		[$width, $height] = getimagesize($file->getPath());
 		if (($this->maxWidth !== null) && ($width > $this->maxWidth))
 		{
