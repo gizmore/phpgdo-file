@@ -1,12 +1,13 @@
 "use strict"
 document.querySelectorAll('.gdo-flow-file input[type=file], input[type=file].gdo-flow-file').forEach(function(input){
 	
-	var flow = new Flow({
+	let flow = new Flow({
 		target: location.href + "&_ajax=1&_fmt=json&flowField=" + input.name,
 		withCredentials: true,
 		fileParameterName: input.name,
 		singleFile: input.className.indexOf('multiple') < 0,
 		testChunks: false,
+		allowDuplicateUploads: true,
 	});
 	
 	flow.assignBrowse(input);
@@ -48,8 +49,8 @@ document.querySelectorAll('.gdo-flow-file input[type=file], input[type=file].gdo
 			}
 		}
 
-		var previewString = document.getElementById('gdo-file-input-'+input.name);
-		var text = file.file.name + " (" + file.file.size + " bytes)";
+		let previewString = document.getElementById('gdo-file-input-'+input.name);
+		let text = file.file.name + " (" + file.file.size + " bytes)";
 		try {
 			previewString.value = text;
 			previewString.innerHTML = text;
@@ -59,7 +60,7 @@ document.querySelectorAll('.gdo-flow-file input[type=file], input[type=file].gdo
 
 	});
 	flow.on('fileError', function(file, message){
-		var loadingPane = document.getElementById('gdt-loading-pane');
+		let loadingPane = document.getElementById('gdt-loading-pane');
 		if (loadingPane) {
 			loadingPane.classList.add('done');
 		}

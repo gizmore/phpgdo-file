@@ -168,4 +168,9 @@ class GDT_Files extends GDT_File
 		}
 	}
 
+    public function isSerializable(): bool
+    {
+        return false;
+    }
+
 }

@@ -141,6 +141,9 @@ final class ImageResize
 			case 'image/png':
 				imagepng($desired_gdim, $file->path);
 				break;
+            case 'image/webp':
+                imagewebp($desired_gdim, $file->path);
+                break;
 			default:
 				throw new GDO_Exception('err_image_format_not_supported', [$toFormat]);
 		}

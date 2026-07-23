@@ -42,4 +42,4 @@ final class GDT_ImageFiles extends GDT_Files
 		return $href;
 	}
 
-}
+  }

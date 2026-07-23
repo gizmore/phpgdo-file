@@ -69,11 +69,6 @@ trait WithImageFile
 	{
 		ImageResize::derotate($file);
 		$this->createScaledVersions($file);
-// 		if ($this->resize)
-// 		{
-// 			$this->createFileToScale($file, 'original');
-// 			ImageResize::resize($file, $this->resizeWidth, $this->resizeHeight, $this->convert);
-// 		}
 	}
 
 	public function createScaledVersions(GDO_File $original): void
@@ -89,8 +84,6 @@ trait WithImageFile
 	###############
 	### Convert ###
 	###############
-// 	public $convert;
-// 	public function convertTo($mime) { $this->convert = $mime; return $this; }
 
 	public function createFileToScale(GDO_File $original, string $name): ?GDO_File
 	{
@@ -123,7 +116,7 @@ trait WithImageFile
         {
             return $this->error('err_image_format_not_supported', [t('unknown')]);
         }
-		[$width, $height] = getimagesize($file->getPath());
+		[$width, $height] = $dim;
 		if (($this->maxWidth !== null) && ($width > $this->maxWidth))
 		{
 			return $this->error('err_image_too_wide', [$this->maxWidth, $this->maxHeight]);

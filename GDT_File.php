@@ -278,11 +278,6 @@ class GDT_File extends GDT_Object
 
 	public function getInput(): ?string
 	{
-// 		if ($this->multiple)
-// 		{
-// 			return $this->getInputMultiple();
-// 		}
-
 		$files = $this->getFiles($this->getName());
 		if (count($files))
 		{
@@ -292,7 +287,6 @@ class GDT_File extends GDT_Object
 				/** @var GDO_File $file * */
 				if (!$file->isPersisted())
 				{
-// 					$this->beforeCopy($file);
 					$file->insert();
 				}
 			}
@@ -539,15 +533,6 @@ class GDT_File extends GDT_Object
 		$this->maxHeight = $height;
 		return $this;
 	}
-
-//	public function getAction()
-//	{
-//		if (!$this->action)
-//		{
-//			$this->action(urldecode($_SERVER['REQUEST_URI']));
-//		}
-//		return $this->action;
-//	}
 
 	public function action(string $action): static
 	{

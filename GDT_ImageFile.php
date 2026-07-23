@@ -18,11 +18,12 @@ final class GDT_ImageFile extends GDT_File
 
 	use WithImageFile;
 
-	public string $icon = 'image';
-
-	public function gdtDefaultLabel(): ?string
+    protected function  __construct(string $name)
     {
-        return 'image';
+        parent::__construct($name);
+        $this->mimes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+        $this->icon('image');
+        $this->label('image');
     }
 
 }

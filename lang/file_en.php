@@ -4,7 +4,8 @@ namespace GDO\File\lang;
 return [
 	'file' => 'File',
 	'files' => 'Files',
-	'image' => 'Image',
+    'icon' => 'Icon',
+    'image' => 'Image',
 	'images' => 'Images',
     'file_icon' => 'Icon',
 	'err_file_too_large' => 'The file exceeds the maximum size of %s.',

@@ -4,6 +4,7 @@ namespace GDO\File\lang;
 return [
 	'file' => 'file',
 	'files' => 'File',
+    'icon' => 'Icon',
 	'image' => 'Imagine',
 	'images' => 'Imagini',
     'file_icon' => 'Icon',
