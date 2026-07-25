@@ -189,7 +189,7 @@ final class GDO_File extends GDO
 	### Render ###
 	##############
 
-	public function getVariantPath(string $variant = null): string
+	public function getVariantPath(?string $variant = null): string
 	{
 		if ($variant)
 		{

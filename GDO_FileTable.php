@@ -50,6 +50,8 @@ class GDO_FileTable extends GDO
 
 	public function getFile(): ?GDO_File { return $this->gdoValue('files_file'); }
 
+    public function getFileID(): string { return $this->gdoVar('files_file'); }
+
 	public function getCreator(): GDO_User { return $this->gdoValue('files_creator'); }
 
 	public function canEdit(GDO_User $user): bool { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }

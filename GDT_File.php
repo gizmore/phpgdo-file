@@ -136,7 +136,10 @@ class GDT_File extends GDT_Object
 		return $var ? GDO_File::getById($var) : null;
 	}
 
-	protected function getFiles(string $key): array
+    /**
+     * @return GDO_File[]
+     */
+	public function getFiles(string $key): array
 	{
 		if (isset($this->uploadedFiles))
 		{

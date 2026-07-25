@@ -49,7 +49,7 @@ final class CronjobImageVariants extends MethodCronjob
 		$this->logStatistics();
 	}
 
-	private function createImageVariantsForModuleClasses(GDO_Module $module)
+	public function createImageVariantsForModuleClasses(GDO_Module $module)
 	{
 		if ($classes = $module->getClasses())
 		{
@@ -69,7 +69,7 @@ final class CronjobImageVariants extends MethodCronjob
 		}
 	}
 
-	private function createImageVariantsFor(GDO $table, GDT_File $gdt)
+	public function createImageVariantsFor(GDO $table, GDT_File $gdt)
 	{
 		# It's a single file inside a gdo.
 		if ($gdt instanceof GDT_ImageFile)

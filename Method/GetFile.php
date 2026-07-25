@@ -56,7 +56,7 @@ final class GetFile extends Method
 		);
 	}
 
-	public function executeWithId(string $id, string $variant = '', bool $nodisp = null): GDT
+	public function executeWithId(string $id, ?string $variant = null, bool $nodisp = null): GDT
 	{
 		if (!($file = GDO_File::getById($id)))
 		{
@@ -65,7 +65,7 @@ final class GetFile extends Method
 		return $this->executeWithFile($file, $variant, $nodisp);
 	}
 
-	public function executeWithFile(GDO_File $file, string $variant = null, bool $nodisp = null): GDT
+	public function executeWithFile(GDO_File $file, ?string $variant = null, bool $nodisp = null): GDT
 	{
 		$path = $file->getVariantPath($variant);
 		if (!FileUtil::isFile($path))
