@@ -186,9 +186,12 @@ final class ImageResize
 			case 'image/jpeg':
 				$source = imagecreatefromjpeg($file->path);
 				break;
-			case 'image/png':
-				$source = imagecreatefrompng($file->path);
-				break;
+            case 'image/png':
+                $source = imagecreatefrompng($file->path);
+                break;
+            case 'image/webp':
+                $source = imagecreatefromwebp($file->path);
+                break;
 			default:
 				throw new GDO_Exception('err_image_format_not_supported', [$file->getType()]);
 		}
