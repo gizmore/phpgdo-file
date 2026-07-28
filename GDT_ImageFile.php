@@ -1,6 +1,9 @@
 <?php
 namespace GDO\File;
 
+use GDO\Core\GDO;
+use GDO\UI\GDT_Image;
+
 /**
  * A single file that uses WithImageFile extension trait.
  *
@@ -21,9 +24,17 @@ final class GDT_ImageFile extends GDT_File
     protected function  __construct(string $name)
     {
         parent::__construct($name);
-        $this->mimes = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+        $this->mime(GDT_Image::GIF, GDT_Image::JPG, GDT_Image::PNG, GDT_Image::WEBP);
         $this->icon('image');
         $this->label('image');
+    }
+
+    public function gdoAfterCreate(GDO $gdo): void
+    {
+        foreach ($this->getValue() as $image)
+        {
+            $this->afterSavingImage($image);
+        }
     }
 
 }

@@ -4,6 +4,10 @@ document.querySelectorAll('.gdo-flow-file input[type=file], input[type=file].gdo
 	let flow = new Flow({
 		target: location.href + "&_ajax=1&_fmt=json&flowField=" + input.name,
 		withCredentials: true,
+		generateUniqueIdentifier: function(file){
+			return file.size + "-" + (file.lastModified || 0) + "-" +
+				Math.random().toString(36).slice(2);
+		},
 		fileParameterName: input.name,
 		singleFile: input.className.indexOf('multiple') < 0,
 		testChunks: false,

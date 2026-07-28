@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 namespace GDO\File\Method;
 
 use GDO\Core\GDO_ArgError;
@@ -45,9 +44,6 @@ final class GetFile extends Method
 		];
 	}
 
-	/**
-	 * @throws GDO_ArgError
-	 */
 	public function execute(): GDT
 	{
 		return $this->executeWithId(
@@ -72,10 +68,6 @@ final class GetFile extends Method
 		{
 			return $this->error('err_file_not_found', [htmlspecialchars($path)]);
 		}
-
-		# @TODO: $_REQUEST vars are not working anymore.
-		$nodisp = $nodisp === null ? (!isset($_REQUEST['nodisposition'])) : $nodisp;
-
 		return Stream::serve($file, $variant, !$nodisp);
 	}
 

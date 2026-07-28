@@ -76,22 +76,15 @@ class GDT_File extends GDT_Object
 	{
 		parent::__construct();
 		$this->table(GDO_File::table());
+        $this->cascade();
 		$this->icon('file');
+        $this->label('file');
 	}
-
-	public function gdtDefaultLabel(): ?string
-    {
-        return 'file';
-    }
 
 	public function renderForm(): string
 	{
 		return GDT_Template::php('File', 'file_form.php', ['field' => $this]);
 	}
-
-	############
-	### Size ###
-	############
 
 	public function renderHTML(): string
 	{
@@ -102,6 +95,12 @@ class GDT_File extends GDT_Object
 		return GDT_Template::php('File', 'file_html.php', [
 			'field' => $this, 'gdo' => $gdo]);
 	}
+
+    public function renderCard(): string
+    {
+        return GDT_Template::php('File', 'file_card.php', ['field' => $this]);
+    }
+
 	##############
 	### Bound  ###
 	##############
@@ -116,7 +115,7 @@ class GDT_File extends GDT_Object
 	 */
 	public function getValue(): mixed
 	{
-		$files = array_merge($this->getInitialFiles(), Arrays::arrayed($this->getFiles($this->name)));
+		$files = array_merge($this->getInitialFiles(), Arrays::arrayed($this->getFiles()));
 		return array_pop($files);
 	}
 
@@ -139,12 +138,9 @@ class GDT_File extends GDT_Object
     /**
      * @return GDO_File[]
      */
-	public function getFiles(string $key): array
+	public function getFiles(?string $key = null): array
 	{
-		if (isset($this->uploadedFiles))
-		{
-			return $this->uploadedFiles;
-		}
+        $key = $key ?: $this->getName();
 		$files = [];
 		$path = $this->getTempDir($key);
 		if ($dir = @dir($path))
@@ -174,9 +170,6 @@ class GDT_File extends GDT_Object
 				]);
 			}
 		}
-
-		$this->uploadedFiles = $files;
-
 		return $files;
 	}
 
@@ -185,8 +178,7 @@ class GDT_File extends GDT_Object
 		$id = 0;
 		if (module_enabled('Session'))
 		{
-			$sess = GDO_Session::instance();
-			if ($sess)
+			if ($sess = GDO_Session::instance())
 			{
 				$id = $sess->getID();
 			}
@@ -198,19 +190,20 @@ class GDT_File extends GDT_Object
 	{
 		if (FileUtil::isFile($dir . '/0'))
 		{
-			if ($id = @file_get_contents($dir . '/id'))
+			if ($id = file_get_contents($dir . '/id'))
 			{
 				return GDO_File::getById($id);
 			}
 			$file = GDO_File::fromForm([
-				'name' => @file_get_contents($dir . '/name'),
-				'type' => @file_get_contents($dir . '/mime'),
+				'name' => file_get_contents($dir . '/name'),
+				'type' => file_get_contents($dir . '/mime'),
 				'size' => filesize($dir . '/0'),
 				'dir' => $dir,
 				'tmp_name' => $dir . '/0',
 			]);
 			$file->insert();
-			file_put_contents($dir . '/id', $file->getID());
+            FileUtil::emptyDir($dir);
+            file_put_contents($dir . '/id', $file->getID());
 			return $file;
 		}
 		return null;
@@ -249,10 +242,6 @@ class GDT_File extends GDT_Object
 		return $json;
 	}
 
-	public function renderCard(): string
-	{
-		return GDT_Template::php('File', 'file_card.php', ['field' => $this]);
-	}
 
 	##############
 	### Action ###
@@ -370,11 +359,16 @@ class GDT_File extends GDT_Object
 	### Value ###
 	#############
 
+    protected function gdoPreviewHrefId(GDO_File $file): string
+    {
+        return $file->getID();
+    }
+
 	public function displayPreviewHref(GDO_File $file): string
 	{
 		if (isset($this->previewHREF))
 		{
-			return str_replace('{id}', $file->getID(), $this->previewHREF);
+			return str_replace('{id}', $this->gdoPreviewHrefId($file), $this->previewHREF);
 		}
 		return GDT::EMPTY_STRING;
 	}
@@ -427,16 +421,13 @@ class GDT_File extends GDT_Object
 					elseif (!$file->isPersisted())
 					{
 						$file->insert();
-//						if ($this->gdo)
-//						{
-							if (!$this->gdo->gdoIsTable())
-							{
-								if (!$this->multiple)
-								{
-									$this->gdo->setVar($this->name, $file->getID());
-								}
-							}
-//						}
+                        if (!$this->gdo->gdoIsTable())
+                        {
+                            if (!$this->multiple)
+                            {
+                                $this->gdo->setVar($this->name, $file->getID());
+                            }
+                        }
 						if (!$this->multiple)
 						{
 							$this->var($file->getID());
@@ -543,7 +534,7 @@ class GDT_File extends GDT_Object
 		return $this;
 	}
 
-	###################
+    ###################
 	### Flow upload ###
 	###################
 
@@ -574,7 +565,25 @@ class GDT_File extends GDT_Object
 		}
 	}
 
-	public function noDelete(bool $noDelete = true): self
+    ##############
+    ### Delete ###
+    ##############
+    public function deleteVariant(string $entry, string $fullpath): bool
+    {
+        return FileUtil::removeFile($fullpath);
+    }
+
+    public function gdoAfterDelete(GDO $gdo): void
+    {
+        if ($id = $gdo->gdoVar($this->getName()))
+        {
+            $dir = GDO_File::filesDir();
+            Filewalker::traverse($dir, "/^{$id}_/", [$this, 'deleteVariant']);
+            $this->deleteVariant('', "{$dir}{$id}");
+        }
+    }
+
+    public function noDelete(bool $noDelete = true): self
 	{
 		$this->noDelete = $noDelete;
 		return $this;
@@ -607,6 +616,10 @@ class GDT_File extends GDT_Object
 			GDT_Response::make()->addField(GDT_Success::make()->text('msg_file_deleted'));
 		}
 	}
+
+    ############
+    ### Flow ###
+    ############
 
 	public function flowUpload(): GDT
 	{
@@ -649,8 +662,12 @@ class GDT_File extends GDT_Object
 
 	private function getChunkDir(string $key): string
 	{
-		$chunkFilename = str_replace('/', '', $_REQUEST['flowFilename']);
-		return $this->getTempDir($key) . $chunkFilename;
+		$identifier = preg_replace('/[^A-Za-z0-9_-]/', '', (string) ($_REQUEST['flowIdentifier'] ?? ''));
+		if (!$identifier)
+		{
+			throw new GDO_Exception('err_upload_failed');
+		}
+		return $this->getTempDir($key) . $identifier;
 	}
 
 	private function onFlowError(string $error, ...$args): GDT
@@ -664,10 +681,6 @@ class GDT_File extends GDT_Object
 		$file = $this->getChunkDir($key) . '/denied';
 		return FileUtil::isFile($file) ? file_get_contents($file) : false;
 	}
-
-	############
-	### Flow ###
-	############
 
 	private function onFlowCheckSizeBeforeCopy(string $key, array $file): bool
 	{
@@ -780,15 +793,5 @@ class GDT_File extends GDT_Object
 		[$finalFile] = $args;
 		@file_put_contents($finalFile, file_get_contents($fullpath), FILE_APPEND);
 	}
-
-	protected function beforeCopy(GDO_File $file) {}
-
-//	private function getFile($key)
-//	{
-//		if ($files = $this->getFiles($key))
-//		{
-//			return array_shift($files);
-//		}
-//	}
 
 }

@@ -1,6 +1,7 @@
 <?php
 namespace GDO\File;
 
+use GDO\Core\GDO;
 use GDO\UI\GDT_Image;
 
 /**
@@ -23,23 +24,29 @@ final class GDT_ImageFiles extends GDT_Files
 	protected function __construct()
 	{
 		parent::__construct();
+        $this->label('images');
 		$this->icon('image');
-		$this->mime(GDT_Image::GIF, GDT_Image::JPG, GDT_Image::PNG);
-	}
-
-	public function gdtDefaultLabel(): ?string
-    {
-        return 'images';
+		$this->mime(GDT_Image::GIF, GDT_Image::JPG, GDT_Image::PNG, GDT_Image::WEBP);
     }
 
-	public function displayPreviewHref(GDO_File $file): string
+    protected function gdoPreviewHrefId(GDO_File $file): string
+    {
+        return $this->gdo->getID();
+    }
+
+    public function displayPreviewHref(GDO_File $file): string
 	{
 		$href = parent::displayPreviewHref($file);
-		if ($this->variant)
+		if (isset($this->variant))
 		{
 			$href .= '&variant=' . $this->variant;
 		}
 		return $href;
 	}
 
-  }
+    protected function afterUpdateFile(GDO_File $file): void
+    {
+        $this->afterSavingImage($file);
+    }
+
+}

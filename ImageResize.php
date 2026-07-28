@@ -159,8 +159,12 @@ final class ImageResize
 			{
 				return -1;
 			}
-			$exif = exif_read_data($file->path);
-			return (int) @$exif['Orientation'];
+			if (!in_array($file->getType(), ['image/jpeg', 'image/tiff'], true))
+			{
+				return 0;
+			}
+			$exif = @exif_read_data($file->getPath(), 'IFD0');
+			return is_array($exif) ? (int) ($exif['Orientation'] ?? 0) : 0;
 		}
 		catch (\Throwable $ex)
 		{

@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace GDO\File;
 
+use GDO\Core\Application;
 use GDO\Core\Debug;
 use GDO\Core\GDO;
 use GDO\Core\GDO_Exception;
@@ -11,6 +12,7 @@ use GDO\Core\GDT_Filesize;
 use GDO\Core\GDT_String;
 use GDO\Core\GDT_UInt;
 use GDO\Date\GDT_Duration;
+use GDO\DB\Query;
 use GDO\Net\Stream;
 use GDO\User\GDO_User;
 use GDO\Util\FileUtil;
@@ -107,8 +109,7 @@ final class GDO_File extends GDO
 		return $file;
 	}
 
-
-	public function getName(): ?string
+    public function getName(): ?string
 	{
 		return $this->gdoVar('file_name');
 	}
@@ -185,6 +186,11 @@ final class GDO_File extends GDO
 		return $this->href ?? GDT::EMPTY_STRING;
 	}
 
+    public function href_view(): string
+    {
+        return href('File', 'View', '&id='.$this->getID());
+    }
+
 	##############
 	### Render ###
 	##############
@@ -206,23 +212,21 @@ final class GDO_File extends GDO
 		return FileUtil::removeFile($fullpath);
 	}
 
+//    public $fileToDeleteId = null;
 
-	/**
+//    public function gdoBeforeDelete(GDO $gdo, Query $query): void
+//    {
+//        $this->fileToDeleteId = $gdo->getID();
+//    }
+
+    /**
 	 * Delete variants and original file when deleted from database.
 	 */
 	public function gdoAfterDelete(GDO $gdo): void
 	{
-		try
-		{
-			# Delete variants
-			Filewalker::traverse(self::filesDir(), "/^{$this->getID()}_/", [$this, 'deleteVariant']);
-			# delete original
-			FileUtil::removeFile($this->getDestPath());
-		}
-		catch (GDO_Exception $ex)
-		{
-			Debug::debugException($ex);
-		}
+        $id = $gdo->getID();
+        Filewalker::traverse(self::filesDir(), "/^{$id}_/", [$this, 'deleteVariant']);
+        $this->deleteVariant('', self::filesDir().$id);
 	}
 
 

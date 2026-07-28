@@ -76,7 +76,12 @@ final class Module_File extends GDO_Module
 		return true;
 	}
 
-	############
+    public function href_administrate_module(): ?string
+    {
+        return $this->href('Listing');
+    }
+
+    ############
 	### Init ###
 	############
 	public function onLoadLanguage(): void
@@ -88,6 +93,7 @@ final class Module_File extends GDO_Module
 	{
 		$this->addBowerJS('flow.js/dist/flow.js');
 		$this->addJS('js/gdo-flow.js');
+        $this->addCSS('css/gdo7-file.css');
 	}
 
 	##############
@@ -96,7 +102,7 @@ final class Module_File extends GDO_Module
 	public function getConfig(): array
 	{
 		return [
-			GDT_Filesize::make('upload_max_size')->initial($this->getInitialFileSize()),
+			GDT_Filesize::make('upload_max_size')->initialValue($this->getInitialFileSize()),
 		];
 	}
 
@@ -105,16 +111,15 @@ final class Module_File extends GDO_Module
 	 */
 	public function getMaxUploadFilesize(): int
 	{
-		return (int) $this->getInitialFileSize();
+		return $this->getInitialFileSize();
 	}
 
-	private function getInitialFileSize(): string
+	private function getInitialFileSize(): int
 	{
 		$post = FileUtil::humanToBytes(ini_get('upload_max_filesize'));
 		$upld = FileUtil::humanToBytes(ini_get('upload_max_filesize'));
 		$min = min($post, $upld);
-		$min = $min ?: (1024 * 1024 * 2);
-		return (string) $min;
+		return $min ?: (1024 * 1024 * 2);
 	}
 
 	public function cfgUploadMaxSize(): int

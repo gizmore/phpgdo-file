@@ -65,7 +65,7 @@ trait WithImageFile
 	### Flow test ###
 	#################
 
-	protected function beforeCopy(GDO_File $file): void
+	protected function afterSavingImage(GDO_File $file): void
 	{
 		ImageResize::derotate($file);
 		$this->createScaledVersions($file);

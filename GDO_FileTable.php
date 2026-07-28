@@ -37,7 +37,7 @@ class GDO_FileTable extends GDO
 	{
 		return [
 			GDT_AutoInc::make('files_id'),
-			GDT_Object::make('files_object')->table($this->gdoFileObjectTable())->notNull(),
+			GDT_Object::make('files_object')->table($this->gdoFileObjectTable())->notNull()->cascade(),
 			GDT_File::make('files_file')->notNull(),
 			GDT_CreatedBy::make('files_creator'),
 			GDT_CreatedAt::make('files_created'),
@@ -48,11 +48,11 @@ class GDO_FileTable extends GDO
 	### Getter ###
 	##############
 
-	public function getFile(): ?GDO_File { return $this->gdoValue('files_file'); }
+	public function getFile(): ?GDO_File { return GDO_File::gdoFrom($this, 'files_file'); }
 
     public function getFileID(): string { return $this->gdoVar('files_file'); }
 
-	public function getCreator(): GDO_User { return $this->gdoValue('files_creator'); }
+	public function getCreator(): GDO_User { return GDO_User::gdoFrom($this, 'files_creator'); }
 
 	public function canEdit(GDO_User $user): bool { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
 
@@ -63,5 +63,14 @@ class GDO_FileTable extends GDO
 	public function getCreatorID(): string { return $this->gdoVar('files_creator'); }
 
 	public function canDelete(GDO_User $user): bool { return ($this->getCreatorID() === $user->getID()) || ($user->isStaff()); }
+
+    ##############
+    ### Delete ###
+    ##############
+
+    public function gdoAfterDelete(GDO $gdo): void
+    {
+        $this->getFile()->gdoAfterDelete($gdo);
+    }
 
 }
