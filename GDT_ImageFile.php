@@ -3,6 +3,7 @@ namespace GDO\File;
 
 use GDO\Core\GDO;
 use GDO\UI\GDT_Image;
+use GDO\Util\Arrays;
 
 /**
  * A single file that uses WithImageFile extension trait.
@@ -31,7 +32,8 @@ final class GDT_ImageFile extends GDT_File
 
     public function gdoAfterCreate(GDO $gdo): void
     {
-        foreach ($this->getValue() as $image)
+        $files = Arrays::arrayed($this->getValue());
+        foreach ($files as $image)
         {
             $this->afterSavingImage($image);
         }
